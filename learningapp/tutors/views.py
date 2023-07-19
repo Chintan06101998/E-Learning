@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from learningapp.models import Course, Material, Assignment
-from learningapp.templates.static.forms import CreateUserForm, CreateCourseForm, UpdateCourseForm, addMaterialForm, \
+from learningapp.models import Course, Material, Assignment, Users
+from learningapp.templates.static.forms import  CreateCourseForm, UpdateCourseForm, addMaterialForm, \
     addAssignmentForm
 
 
@@ -99,7 +99,7 @@ def updateAssignment(request, assignment_id):
         if form.is_valid():
             form.save()
             return HttpResponse(
-                'Assignment updated Successfully')  # Replace 'material_list' with the URL name of your material list view.
+                'Assignment updated Successfully')  #Replace 'material_list' with the URL name of your material list view.
     else:
         assignment.document = ''
         form = addAssignmentForm(instance=assignment)
@@ -114,3 +114,6 @@ def deleteAssignment(request, assignment_id):
         return HttpResponse('Successfully Deleted')  # Redirect to the course list page after deletion
 
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
+
+def getallCourses(request, prof_id):
+    user = Users.objects.filter(is_student=False)

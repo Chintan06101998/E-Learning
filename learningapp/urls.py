@@ -21,6 +21,7 @@ from . import views
 urlpatterns = [
     # path('login/',  views.login),
     path('register/',  views.register),
+    path('login/',  views.login_view),
     path('tutors/',include('learningapp.tutors.urls')),
     path('students/',include('learningapp.students.urls'))
 ]

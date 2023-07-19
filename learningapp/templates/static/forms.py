@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from django import forms
@@ -8,10 +8,20 @@ from django import forms
 from learningapp.models import Course, Users, Material, Assignment
 
 
-class CreateUserForm(UserCreationForm):
+class UserRegistrationForm(UserCreationForm):
     class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        model = Users
+        fields = ['username', 'email', 'password1', 'password2', 'user_type', 'memberShip']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add any additional form customization or validation here
+
+
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = Users
+        fields = ['username', 'password']
 
 
 class CreateCourseForm(forms.ModelForm):

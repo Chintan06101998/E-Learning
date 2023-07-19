@@ -1,31 +1,43 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 
 from learningapp.models import Course
-from learningapp.templates.static.forms import CreateUserForm, CreateCourseForm, UpdateCourseForm
+from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
 
-
-# def login(request):
-#     if request.method == "POST":
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#
-#         user = authenticate(request, email=email, password=password)
-#         if user is not None:
-#             login(request,user)
-#             return  JsonResponse({"message":"Login Successfully"})
-#         else :
-#             return JsonResponse({"message":"Username & Password are invalid"})
 
 def register(request):
-
-    if request.method == "POST":
-        form = CreateUserForm(request.POST)
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        print("form--->>", str(form))
         if form.is_valid():
             form.save()
+            # Redirect to a success page or perform other actions
+            return HttpResponse('success')
+        else:
+            return HttpResponse("Error")
     else:
-        form = CreateUserForm()
+        form = UserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
 
-    context = {'form': form}
-    return render(request, 'register.html', context)
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to a success page
+                return HttpResponse('add_course')
+            else:
+                # Handle invalid credentials
+                form.add_error(None, 'Invalid username or password')
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})

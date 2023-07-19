@@ -1,41 +1,37 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 import datetime
+
 
 from django.db.models import JSONField
 
 
-class Users(models.Model):
-    id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=255)
-    dob = models.DateField()
-    is_student = models.BooleanField(default=False)
-    subscription_type = models.CharField(max_length=255)
+class Users(User):
+    MEMBERSHIP_CHOICE = [
+        ('F', 'Free'),
+        ('S', 'Silver'),
+        ('G', 'Gold'),
+        ('P', 'Premium')]
+
+    USER_TYPE = (
+        ('0', 'Student'),
+        ('1', 'Professor')
+    )
+
+    user_type = models.CharField(max_length=255, choices=USER_TYPE, null=True, default='0')
+    memberShip = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICE, default='F')
 
     def __str__(self):
-        return self.first_name
+        return self.username
 
-
-# class User(AbstractUser):
-#     USER_TYPE_CHOICES = (
-#         ('student', 'Student'),
-#         ('tutor', 'Tutor'),
-#     )
-#     username = models.CharField(max_length=150, unique=True)
-#     email = models.EmailField(unique=True)
-#     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
 
 
 class Course(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
     #enrolled_student = models.OneToOneField(Users, on_delete=models.CASCADE)
-    tutor = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='courses')
-    students = models.ManyToManyField(Users, related_name='enrolled_courses', blank=True, null=False) #adding when student when register
+    tutor = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='courses_tutored')
+    students = models.ManyToManyField(Users, related_name='enrolled_courses') #adding when student when register
     createdAt = models.DateField(default=datetime.date.today)
 
     def __str__(self):
