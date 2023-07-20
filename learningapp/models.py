@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 import datetime
+import json
 
 
 from django.db.models import JSONField
@@ -58,34 +59,24 @@ class Assignment(models.Model):
     due_date = models.DateField(null=True)
     due_time = models.TimeField(null=True)
     grade = models.PositiveIntegerField(default=0)
-
     def __str__(self):
         return  self.assignment_name
 
 
 
 class Quiz(models.Model):
-    id = models.AutoField(primary_key=True)
-    course_id = models.OneToOneField(Course, on_delete=models.CASCADE, related_name='quiz')
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    # questions = JSONField()
-    quiz_start_date = models.DateTimeField()
-    quiz_due_date = models.DateTimeField()
-    marks = models.IntegerField(default=0)
+    quiz_data = models.TextField()  # JSON data as a string
+    def set_quiz_data(self, data):
+        self.quiz_data = json.dumps(data)
+
+    def get_quiz_data(self):
+        return json.loads(self.quiz_data)
+
+    def __str__(self):
+        quiz_data_dict = self.get_quiz_data()
+        return quiz_data_dict['question']
 
 
-class Question(models.Model):
-    id = models.AutoField(primary_key=True)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
-    text = models.TextField()
-
-
-class Option(models.Model):
-    id = models.AutoField(primary_key=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='options')
-    text = models.CharField(max_length=255)
-    is_correct = models.BooleanField(default=False)
 
 
 class Results(models.Model):
@@ -93,21 +84,17 @@ class Results(models.Model):
         ('quiz', 'Quiz'),
         ('assignment', 'Assignment')
     ]
-    id = models.AutoField(primary_key=True)
     related_id = models.CharField(max_length=255)
     user_id = models.OneToOneField(Users, on_delete=models.CASCADE)
-    # type = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscription')
-    quiz_grade = models.OneToOneField(Quiz, on_delete=models.CASCADE)
-    assignment_grade = models.OneToOneField(Material, on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, choices=TYPE, default='assignment')
+    grade = models.PositiveIntegerField(default=0)
+
 
 
 class MaterialAnswer(models.Model):
-    id = models.AutoField(primary_key=True)
-    material_id = models.OneToOneField(Material, on_delete=models.CASCADE)
-    student_id = models.OneToOneField(Users, on_delete=models.CASCADE)
-    answers = models.CharField(max_length=255)
-    submission_date = models.DateField()
-
+    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Users, on_delete=models.CASCADE)
+    grade = models.PositiveIntegerField(default=0)
 
 class Subscription(models.Model):
     SUBSCRIPTION_CHOICES = [
@@ -124,3 +111,8 @@ class Grade(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     course_material = models.ForeignKey(Material, on_delete=models.CASCADE)
     grade = models.DecimalField(max_digits=5, decimal_places=2)
+
+
+
+
+

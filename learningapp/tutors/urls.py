@@ -12,5 +12,9 @@ urlpatterns = [
     path('deletematerial/<int:material_id>', views.deleteMaterial),
     path('addassignment/', views.addAssignment),
     path('updateassignment/<int:assignment_id>', views.updateAssignment),
-    path('deleteassignment/<int:assignment_id>', views.deleteAssignment)
+    path('deleteassignment/<int:assignment_id>', views.deleteAssignment),
+    path('getcourses/<int:user_id>', views.getcourse),
+    path('addmarks/', views.addMarks),
+    path('createquiz/', views.createquiz),
+    path('updatequiz/<int:quiz_id>', views.updateQuiz)
 ]

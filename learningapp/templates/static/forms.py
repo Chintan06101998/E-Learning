@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-from learningapp.models import Course, Users, Material, Assignment
+from learningapp.models import Course, Users, Material, Assignment, MaterialAnswer, Results
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -52,3 +52,15 @@ class addAssignmentForm(forms.ModelForm):
                 attrs={'type': 'time', 'placeholder': 'HH:MM:SS', 'class': 'form-control'}
             )
         }
+
+class addMarksForms(forms.ModelForm):
+    class Meta:
+        model = Results
+        fields = ['grade']
+        # widgets = {
+        #     'due_date': forms.DateInput(
+        #         attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}
+        #     ),
+        #     'due_time': forms.DateInput(
+        #         attrs={'type': 'time', 'placeholder': 'HH:MM:SS', 'class': 'form-control'}
+        #     )

@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from learningapp.models import Course, Material, Assignment, Users
-from learningapp.templates.static.forms import  CreateCourseForm, UpdateCourseForm, addMaterialForm, \
-    addAssignmentForm
+from learningapp.models import Course, Material, Assignment, Quiz
+from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
+    addAssignmentForm, addMarksForms
 
 
 def createCourse(request):
@@ -99,7 +99,7 @@ def updateAssignment(request, assignment_id):
         if form.is_valid():
             form.save()
             return HttpResponse(
-                'Assignment updated Successfully')  #Replace 'material_list' with the URL name of your material list view.
+                'Assignment updated Successfully')  # Replace 'material_list' with the URL name of your material list view.
     else:
         assignment.document = ''
         form = addAssignmentForm(instance=assignment)
@@ -115,5 +115,64 @@ def deleteAssignment(request, assignment_id):
 
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
 
-def getallCourses(request, prof_id):
-    user = Users.objects.filter(is_student=False)
+
+def getcourse(request, user_id):
+    course = Course.objects.filter(tutor_id=user_id)
+    print("--->", course)
+    return HttpResponse('get Course')
+
+
+def addMarks(request):
+    if request.method == "POST":
+        form = addMarksForms(request.POST)
+        if form.is_valid():
+            form1 = form.save(commit=False)
+            form1.save()
+            return render(request, "tutors/addMarks.html", {'form': form1})
+    else:
+        form = addMarksForms()
+    return render(request, "tutors/addMarks.html", {'form': form})
+
+def createquiz(request):
+    quiz_data = [
+        {
+            'question': 'What is Django?',
+            'option1': 'A programming language',
+            'option2': 'A web framework',
+            'option3': 'A database management system',
+            'option4': 'An operating system',
+            'answer': 'A web framework',
+        },
+        {
+            'question': 'What is Python?',
+            'option1': 'A markup language',
+            'option2': 'A web framework',
+            'option3': 'A programming language',
+            'option4': 'An operating system',
+            'answer': 'A programming language',
+        },
+        # Add more quizzes here...
+    ]
+
+    for data in quiz_data:
+        quiz = Quiz()
+        quiz.set_quiz_data(data)
+        quiz.save()
+
+    return HttpResponse('Success')
+
+
+def updateQuiz(request, quiz_id):
+    quiz = Quiz.objects.get(pk=quiz_id)
+    updated_data = {
+        'question': 'What is Django?',
+        'option1': 'A powerful web framework',
+        'option2': 'A web design tool',
+        'option3': 'A database management system',
+        'option4': 'An operating system',
+        'answer': 'A powerful web framework',
+    }
+
+    quiz.set_quiz_data(updated_data)
+    quiz.save()
+    return  HttpResponse("Quiz Updated Successfully")

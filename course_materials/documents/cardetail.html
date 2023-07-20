@@ -1,0 +1,36 @@
+{#<!-- cardetail.html -->#}
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <title>Car Detail</title>#}
+{#</head>#}
+{#<body>#}
+{#    <h1>Car Detail</h1>#}
+{#    <p>Vehicles in {{ car_type.name }} company with number {{ car_type.id }}:</p>#}
+{#    <ul>#}
+{#        {% for vehicle in vehicleList %}#}
+{#        <li>{{ vehicle.car_name }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{##}
+{#    <!-- URL Namespacing -->#}
+{#    <a href="{% url 'home' %}">Go back to Home</a>#}
+{#</body>#}
+{#</html>#}
+{##}
+{##}
+{##}
+
+{% extends 'static/carapp/base.html' %}
+{% block body_block %}
+        <h1>Car Detail</h1>
+    <p>Vehicles in {{ car_type.name }} company with number {{ car_type.id }}:</p>
+    <ul>
+        {% for vehicle in vehicleList %}
+        <li>{{ vehicle.car_name }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- URL Namespacing -->
+    <a href="{% url 'home' %}">Go back to Home</a>
+{% endblock %}

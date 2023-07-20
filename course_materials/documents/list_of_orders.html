@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Orders</title>
+</head>
+<body>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% else %}
+        {% if orders %}
+            <h2>Your Orders:</h2>
+            <ul>
+                {% for order in orders %}
+                    <li>Order ID: {{ order.id }}, Vehicle: {{ order.vehicle.car_name }}, Buyer: {{ order.buyer.username }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have not placed any orders.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

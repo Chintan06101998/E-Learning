@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from learningapp.models import Course
+from learningapp.models import Course, Material
 from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
 
 
@@ -33,7 +33,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 # Redirect to a success page
-                return HttpResponse('add_course')
+                return HttpResponse('Login Successfully')
             else:
                 # Handle invalid credentials
                 form.add_error(None, 'Invalid username or password')
@@ -41,3 +41,8 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+def getmaterial(request, course_id):
+    material = Material.objects.filter(course_id=course_id)
+    return render(request, 'getcourses.html',{'material':material})

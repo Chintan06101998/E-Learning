@@ -22,6 +22,7 @@ urlpatterns = [
     # path('login/',  views.login),
     path('register/',  views.register),
     path('login/',  views.login_view),
+    path('getmaterial/<int:course_id>', views.getmaterial),
     path('tutors/',include('learningapp.tutors.urls')),
     path('students/',include('learningapp.students.urls'))
 ]
