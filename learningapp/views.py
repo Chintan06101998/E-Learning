@@ -30,11 +30,13 @@ def login_view(request):
             password = form.cleaned_data['password']
 
             user = authenticate(request, username=username, password=password)
+            print("User--->",)
             if user is not None:
                 login(request, user)
                 # Redirect to a success page
 
                 print("--->",user)
+
                 # request.session['user'] = {
                 #     'id': user.id,
                 #     'username': user.username,
