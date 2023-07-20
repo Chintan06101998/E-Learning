@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from learningapp.models import Course, Material, Assignment, Quiz
@@ -154,16 +156,20 @@ def createquiz(request):
         # Add more quizzes here...
     ]
 
-    for data in quiz_data:
-        quiz = Quiz()
-        quiz.set_quiz_data(data)
-        quiz.save()
+    # Convert the list to a JSON string
+    quiz_data_json = json.dumps(quiz_data)
+
+    # Save the JSON string in the database
+    quiz_model = Quiz.objects.create(quiz_data_json=quiz_data_json)
 
     return HttpResponse('Success')
 
 
+
 def updateQuiz(request, quiz_id):
-    quiz = Quiz.objects.get(pk=quiz_id)
+    quiz = get_object_or_404(pk=quiz_id)
+
+    # Updated quiz data
     updated_data = {
         'question': 'What is Django?',
         'option1': 'A powerful web framework',
@@ -173,6 +179,10 @@ def updateQuiz(request, quiz_id):
         'answer': 'A powerful web framework',
     }
 
+    # Set the updated quiz data
     quiz.set_quiz_data(updated_data)
+
+    # Save the quiz object with updated data
     quiz.save()
-    return  HttpResponse("Quiz Updated Successfully")
+
+    return HttpResponse("Quiz Updated Successfully")

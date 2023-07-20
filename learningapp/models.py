@@ -65,18 +65,7 @@ class Assignment(models.Model):
 
 
 class Quiz(models.Model):
-    quiz_data = models.TextField()  # JSON data as a string
-    def set_quiz_data(self, data):
-        self.quiz_data = json.dumps(data)
-
-    def get_quiz_data(self):
-        return json.loads(self.quiz_data)
-
-    def __str__(self):
-        quiz_data_dict = self.get_quiz_data()
-        return quiz_data_dict['question']
-
-
+    quiz_data_json = models.TextField()
 
 
 class Results(models.Model):

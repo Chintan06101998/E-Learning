@@ -33,6 +33,18 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 # Redirect to a success page
+
+                print("--->",user)
+                # request.session['user'] = {
+                #     'id': user.id,
+                #     'username': user.username,
+                #     'email': user.email,
+                #     'usertype':user.user_type,
+                #     'membership': user.memberShip
+                #     # Add any other user-related data you need
+                # }
+
+
                 return HttpResponse('Login Successfully')
             else:
                 # Handle invalid credentials
