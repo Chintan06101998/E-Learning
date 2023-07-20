@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f13e3c6-de84-440e-9a95-2659fe1b8515" name="Changes" comment="" />
+    <list default="true" id="6f13e3c6-de84-440e-9a95-2659fe1b8515" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/addmaterial.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/courselist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/students/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/students/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/static/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/static/forms.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

@@ -92,9 +92,11 @@ class Results(models.Model):
 
 
 class AssignmentAnswer(models.Model):
-    Assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Users, on_delete=models.CASCADE)
-    grade = models.PositiveIntegerField(default=0)
+    answer = models.FileField(upload_to='course_materials/documents', null=True)
+    submission_date = models.DateField(null=True, auto_now=True)
+    submission_time = models.TimeField(null=True, auto_now=True)
 
 class Subscription(models.Model):
     SUBSCRIPTION_CHOICES = [
