@@ -4,8 +4,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from django import forms
+from django.forms import ModelForm
 
-from learningapp.models import Course, Users, Material, Assignment, MaterialAnswer, Results
+from learningapp.models import Course, Users, Material, Assignment, Results, AssignmentAnswer
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -64,3 +65,9 @@ class addMarksForms(forms.ModelForm):
         #     'due_time': forms.DateInput(
         #         attrs={'type': 'time', 'placeholder': 'HH:MM:SS', 'class': 'form-control'}
         #     )
+
+
+class uploadAnswerForm(forms.ModelForm):
+    class Meta:
+        model = AssignmentAnswer
+        fields = "__all__"
