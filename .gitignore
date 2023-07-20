@@ -1,0 +1,67 @@
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore the virtual environment
+venv/
+env/
+.env
+
+# Ignore local development settings
+*.sqlite3
+*.db
+*.local
+
+# Ignore static files and media
+/static/
+/media/
+
+# Ignore secret keys and sensitive information
+*.secret
+*.key
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+
+# Ignore database migration files
+**/migrations/
+
+# Ignore project settings files
+*.settings
+
+# Ignore generated documentation
+/docs/_build/
+
+# Ignore IDE and text editor specific files
+.vscode/
+.idea/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.bak
+*.cache
+*.vs
+
+# Ignore compiled JavaScript
+*.js.map
+
+# Ignore macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore system-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignore development or backup directories
+/dev/
+/backup/
+/backup*/
+/tmp/
