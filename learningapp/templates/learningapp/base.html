@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}My Django App with Bootstrap 5{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+    <!-- Add this to the <head> section -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center justify-content-center" style=" border-radius: 3px;padding: 2px;" href="{% url 'login' %}">
+          <img src="https://victorthemes.store/splash/rouen/assets/images/logos/favicon.png" height="60" alt="Logo" /> <h6 class="h6">E-Learn</h6>
+        </a>
+      </div>
+    </nav>
+
+    <div class="container">
+      {% block content %}
+      <!-- Content from specific templates will be placed here -->
+      {% endblock %}
+    </div>
+    <!-- Add this just before the closing </body> tag -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
