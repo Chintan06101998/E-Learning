@@ -91,8 +91,8 @@ class Results(models.Model):
 
 
 
-class MaterialAnswer(models.Model):
-    material_id = models.ForeignKey(Material, on_delete=models.CASCADE)
+class AssignmentAnswer(models.Model):
+    Assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     grade = models.PositiveIntegerField(default=0)
 
