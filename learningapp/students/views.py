@@ -23,3 +23,6 @@ def uploadAnswer(request, assignment_id):
         assignment.document = ''
         form = uploadAnswerForm()
         return render(request, './tutors/addmaterial.html', {'form': form})
+
+def getQuizesByCourseId(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
