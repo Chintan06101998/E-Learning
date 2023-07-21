@@ -141,22 +141,28 @@ def addAssignment(request,course_id):
         else:
             print(form.add_error())
     else:
-        form = addAssignmentForm()
+        form = addAssignmentForm(initial={'name':'','description':'','initial_due_time':'','initial_due_date':''})
     return render(request, "tutors/createAssignment.html", {'form': form})
 
 
+@login_required
+@user_passes_test(is_tutor)
 def updateAssignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
+    initial_due_time=''
+    initial_due_date=''
     if request.method == "POST":
         form = addAssignmentForm(request.POST, request.FILES, instance=assignment)
         if form.is_valid():
             form.save()
-            return HttpResponse(
-                'Assignment updated Successfully')  # Replace 'material_list' with the URL name of your material list view.
+            return HttpResponseRedirect(reverse('tutor-view-course-assignments',args=[assignment.course_id.id])) 
     else:
-        assignment.document = ''
         form = addAssignmentForm(instance=assignment)
-    return render(request, "tutors/updatematerial.html", {'form': form, 'assignment_id': assignment_id})
+        patharr= assignment.document.name.split('/')
+        fakepath = '/fakepath/'+patharr[len(patharr)-1]
+        initial_due_time = assignment.due_time.strftime('%H:%M')
+        initial_due_date= assignment.due_date.strftime('%Y-%m-%d')
+    return render(request, "tutors/createAssignment.html", {'form': form, 'assignment_id': assignment_id,'fakepath':fakepath, 'initial_due_time':initial_due_time,'initial_due_date':initial_due_date})
 
 
 def deleteAssignment(request, assignment_id):

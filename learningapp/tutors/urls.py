@@ -15,7 +15,7 @@ urlpatterns = [
     path('edit-course-material/<int:material_id>', views.updateMaterial,name='tutor-edit-course-material'),
     path('deletematerial/<int:material_id>', views.deleteMaterial),
     path('create-course-assignment/<int:course_id>/', views.addAssignment,name='tutor-add-course-assignment'),
-    path('updateassignment/<int:assignment_id>', views.updateAssignment),
+    path('edit-course-assignment/<int:assignment_id>', views.updateAssignment,name='tutor-edit-course-assignment'),
     path('deleteassignment/<int:assignment_id>', views.deleteAssignment),
     path('home', views.home_tutor, name = "tutor-home"),
     path('courses', views.getcourse, name = "tutor-courses"),
