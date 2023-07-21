@@ -66,13 +66,14 @@ def updateCourse(request, course_id):
 
     return render(request, "tutors/coursecreate.html", {'form': form})
 
-
+@login_required
+@user_passes_test(is_tutor)
 def deleteCourse(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
     if request.method == "POST":
         course.delete()
-        return HttpResponse('course_list')  # Redirect to the course list page after deletion
+        return HttpResponseRedirect(reverse('tutor-courses'))
 
     return render(request, "tutors/coursedelete.html", {'course': course})
 
@@ -115,13 +116,14 @@ def updateMaterial(request, material_id):
 
     return render(request, "tutors/addmaterial.html", {'form': form, 'material_id': material_id,'fakepath':fakepath})
 
-
+@login_required
+@user_passes_test(is_tutor)
 def deleteMaterial(request, material_id):
     material = get_object_or_404(Material, pk=material_id)
 
     if request.method == "POST":
         material.delete()
-        return HttpResponse('Successfully Delete')  # Redirect to the course list page after deletion
+        return HttpResponseRedirect(reverse('tutor-view-course-material',args=[material.course_id.id]))
 
     return render(request, "tutors/materialdelete.html", {'material': material})
 
@@ -164,14 +166,14 @@ def updateAssignment(request, assignment_id):
         initial_due_date= assignment.due_date.strftime('%Y-%m-%d')
     return render(request, "tutors/createAssignment.html", {'form': form, 'assignment_id': assignment_id,'fakepath':fakepath, 'initial_due_time':initial_due_time,'initial_due_date':initial_due_date})
 
-
+@login_required
+@user_passes_test(is_tutor)
 def deleteAssignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
 
     if request.method == "POST":
         assignment.delete()
-        return HttpResponse('Successfully Deleted')  # Redirect to the course list page after deletion
-
+        return HttpResponseRedirect(reverse('tutor-view-course-assignments',args=[assignment.course_id.id])) 
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
 
 @login_required

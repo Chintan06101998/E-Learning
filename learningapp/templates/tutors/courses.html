@@ -58,13 +58,30 @@
                       <td class="cell">
                         <span>{{ course.createdAt }}</span>
                       </td>
-
                       <td class="cell">
                         <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">View</a>
                         <a class="btn-sm app-btn-secondary" href="{% url 'tutor-edit-course' course.id %}">Edit</a>
-                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">Delete</a>
+                        <a class="btn-sm app-btn-secondary"  data-toggle="modal" href="#deleteCourseModal{{ course.id }}">Delete</a>
                       </td>
                     </tr>
+                  <div id="deleteCourseModal{{ course.id }}" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          
+                          <h4 class="modal-title">Delete Course</h4>
+                          {% comment %} <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> {% endcomment %}
+                        </div>
+                        <div class="modal-body text-black">
+                          <p>Are you sure want to delete <strong>{{ course.name }}</strong> course? Please note this cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-info text-white" data-dismiss="modal">Cancel</button>
+                          <form method="post" action="{% url 'tutor-delete-course' course.id %}"> {% csrf_token %} <button type="submit" class="btn btn-danger text-white " style="background:red;">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
                     {% endfor %}
                   </tbody>
                 </table>
@@ -83,5 +100,10 @@
   </div>
   <!--//app-content-->
 </div>
+
 </div>
+
+
+</div>
+<!-- your_template.html -->
 {% endblock %} 

@@ -91,9 +91,50 @@
                   >Download
                 </a>
                 <a class="btn-sm app-btn-secondary" style="margin-left:4px;" href="{% url 'tutor-edit-course-material' material.id %}">Edit</a>
-                <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course_details.id %}">Delete</a>
+                <a class="btn-sm app-btn-secondary"  data-toggle="modal" href="#deleteMaterialModal{{ material.id }}">Delete</a>
               </td>
             </tr>
+
+            <div id="deleteMaterialModal{{ material.id }}" class="modal fade">
+              <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Delete Assignemnt</h4>
+                  </div>
+                  <div class="modal-body text-black">
+                    <p>
+                      Are you sure want to delete
+                      <strong>{{ material.name }}</strong> material? Please note
+                      this cannot be undone.
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-info text-white"
+                      data-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <form
+                      method="post"
+                      action="{% url 'tutor-delete-course-material' material.id %}"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        class="btn btn-danger text-white"
+                        style="background: red"
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             {% endfor %}
           </tbody>
         </table>
