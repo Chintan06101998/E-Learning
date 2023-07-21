@@ -65,6 +65,7 @@ class Assignment(models.Model):
 
 
 class Quiz(models.Model):
+
     quiz_data_json = models.TextField()
 
 
