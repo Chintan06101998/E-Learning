@@ -49,7 +49,7 @@
                     <tr>
                       <td class="cell">{{course.id}}</td>
 
-                      <td class="cell">{{course.name}}s</td>
+                      <td class="cell">{{course.name}}</td>
                       <td class="cell">
                         <span class="truncate"
                           >{{course.description}}</span
@@ -60,7 +60,9 @@
                       </td>
 
                       <td class="cell">
-                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}"">View</a>
+                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">View</a>
+                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-edit-course' course.id %}">Edit</a>
+                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">Delete</a>
                       </td>
                     </tr>
                     {% endfor %}

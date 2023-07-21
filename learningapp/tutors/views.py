@@ -20,7 +20,7 @@ def createCourse(request):
             form1.save()
             return HttpResponseRedirect(reverse('tutor-courses'))
     else:
-        form = CreateCourseForm()
+        form = CreateCourseForm(initial={'name':'','description':''})
     return render(request, "tutors/coursecreate.html", {'form': form})
 
 @login_required
@@ -60,11 +60,11 @@ def updateCourse(request, course_id):
         form = UpdateCourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
-            return HttpResponse('course_detail')
+            return HttpResponseRedirect(reverse('tutor-courses'))
     else:
         form = UpdateCourseForm(instance=course)
 
-    return render(request, "tutors/courseupdate.html", {'form': form})
+    return render(request, "tutors/coursecreate.html", {'form': form})
 
 
 def deleteCourse(request, course_id):
