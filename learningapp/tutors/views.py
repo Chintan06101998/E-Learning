@@ -94,22 +94,26 @@ def addMaterial(request,course_id):
             form1.save()
             return HttpResponseRedirect(reverse('tutor-view-course-material',args=[course_id]))
     else:
-        form = addMaterialForm()
+        form = addMaterialForm(initial={'name':'','description':''})
     return render(request, "tutors/addmaterial.html", {'form': form})
 
 
+@login_required
+@user_passes_test(is_tutor)
 def updateMaterial(request, material_id):
     material = get_object_or_404(Material, pk=material_id)
+    fakepath=''
     if request.method == "POST":
         form = addMaterialForm(request.POST, request.FILES, instance=material)
         if form.is_valid():
             form.save()
-            return HttpResponse(
-                'material_list')  # Replace 'material_list' with the URL name of your material list view.
+            return HttpResponseRedirect(reverse('tutor-view-course-material',args=[material.course_id.id]))
     else:
-        material.document = ''
         form = addMaterialForm(instance=material)
-    return render(request, "tutors/updatematerial.html", {'form': form, 'material_id': material_id})
+        patharr= material.document.name.split('/')
+        fakepath = '/fakepath/'+patharr[len(patharr)-1]
+
+    return render(request, "tutors/addmaterial.html", {'form': form, 'material_id': material_id,'fakepath':fakepath})
 
 
 def deleteMaterial(request, material_id):

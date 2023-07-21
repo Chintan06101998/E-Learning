@@ -73,7 +73,8 @@
               <th class="cell">Material #</th>
               <th class="cell">Name</th>
               <th class="cell">Description</th>
-              <th class="cell">Download</th>
+              <th class="cell">Actions</th>
+
             </tr>
           </thead>
           <tbody>
@@ -81,7 +82,7 @@
             <tr>
               <td class="cell">{{material.id}}</td>
               <td class="cell">{{material.name}}</td>
-              <td class="cell">{{material.description}}</td>
+              <td class="cell w-50">{{material.description}}</td>
               <td class="cell">
                 <a
                   class="btn-sm app-btn-secondary"
@@ -89,6 +90,8 @@
                   download
                   >Download
                 </a>
+                <a class="btn-sm app-btn-secondary" style="margin-left:4px;" href="{% url 'tutor-edit-course-material' material.id %}">Edit</a>
+                <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course_details.id %}">Delete</a>
               </td>
             </tr>
             {% endfor %}

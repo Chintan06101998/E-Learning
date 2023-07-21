@@ -12,7 +12,7 @@ urlpatterns = [
     path('edit-course/<int:course_id>/', views.updateCourse,name='tutor-edit-course'),
     path('deletecourse/<int:course_id>/', views.deleteCourse, name='delete_course'),
     path('create-course-material/<int:course_id>',views.addMaterial,name='tutor-add-course-material'),
-    path('updatematerial/<int:material_id>', views.updateMaterial),
+    path('edit-course-material/<int:material_id>', views.updateMaterial,name='tutor-edit-course-material'),
     path('deletematerial/<int:material_id>', views.deleteMaterial),
     path('create-course-assignment/<int:course_id>/', views.addAssignment,name='tutor-add-course-assignment'),
     path('updateassignment/<int:assignment_id>', views.updateAssignment),

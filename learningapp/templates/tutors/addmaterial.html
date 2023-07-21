@@ -1,7 +1,9 @@
 {% extends 'learningapp/base_tutor.html' %} {% block content %}
 <div class="container-xl pt-3 p-md-3 p-lg-4">
   <div class="" style="height: calc(100vh - 120px)">
-    <h1 class="app-page-title">Add Material</h1>
+    <h1 class="app-page-title">
+      {% if form.name.value %} Update {% else %} Create {% endif %} Material
+    </h1>
 
     <div class="app-card app-card-settings shadow-sm p-4">
       <div class="app-card-body">
@@ -15,7 +17,7 @@
               maxlength="255"
               class="form-control"
               id="id_name"
-              value=""
+              value="{{form.name.value}}"
               required
             />
           </div>
@@ -30,24 +32,44 @@
               style="min-height: 150px"
               required
               id="id_description"
-            ></textarea>
+            >
+{{form.description.value}}</textarea
+            >
           </div>
 
           <div class="mb-3">
             <label for="id_document" class="form-label"
               >Material Document</label
             >
+
             <input
               class="form-control"
               type="file"
               name="document"
+              {%
+              if
+              not
+              current_document
+              %}
               required
+              {%
+              endif
+              %}
+              value="{{form.document.value}}"
               id="id_document"
             />
+            {% if form.document.value %}
+            <p class="mt-1">
+              Current Document:
+              <a href="http://127.0.0.1:8000/{{ form.document.value }}" download
+                >{{ fakepath }}</a
+              >
+            </p>
+            {% endif %}
           </div>
 
           <button type="submit" class="btn app-btn-primary w-100">
-            Create
+            {% if form.name.value %} Update {% else %} Create {% endif %}
           </button>
         </form>
       </div>
