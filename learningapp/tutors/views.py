@@ -121,8 +121,10 @@ def deleteAssignment(request, assignment_id):
 @login_required
 def getcourse(request, user_id):
     session = request.session['user']
+    print("Session", session)
     if session['usertype'] == '1':
         courses = Course.objects.filter(tutor_id=user_id)
+
         return render(request,'tutors/homepage.html',{'courses':courses})
 
 
