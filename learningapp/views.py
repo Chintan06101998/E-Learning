@@ -28,9 +28,6 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-def home_tutor(request):
-
-    return render(request, 'tutors/home.html' )
 
 def login_view(request):
     if request.method == 'POST':
@@ -54,13 +51,13 @@ def login_view(request):
                     # Access custom fields of the User model here
                     user_type = user.user_type
                     memberShip = user.memberShip
-                    if int(user_type) != 0:
+                    if int(user_type) == 0:
                         # render student view
                         form = LoginForm()
-                        response = HttpResponseRedirect(reverse("homepage", args=[user.id]))
+                        response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
                         return response
                     else:
-                        return HttpResponseRedirect("/" + user.id)
+                        return HttpResponseRedirect(reverse('tutor-home'))
                         # render tutor view
             except Users.DoesNotExist:
                 form.add_error(None, 'No such user exists.')
@@ -70,7 +67,16 @@ def login_view(request):
         if not request.session.is_empty():
             if('user' in request.session):
                 user = request.session['user']
-                return HttpResponseRedirect(reverse("homepage", args=[user['id']]))
+                print(user)
+                if int(user['usertype']) == 0:
+                    # render student view
+                    form = LoginForm()
+                    response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
+                    return response
+                else:
+                    # render tutor view
+                    return HttpResponseRedirect(reverse('tutor-home'))
+                  
             else:
                  form = LoginForm()
         else:

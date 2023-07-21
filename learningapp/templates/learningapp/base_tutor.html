@@ -35,7 +35,7 @@
       <div class="app-header-inner">
         <div class="container-fluid py-2">
           <div class="app-header-content">
-            <div class="row  align-items-center">
+            <div class="row align-items-center">
               <div class="col-auto">
                 <a
                   id="sidepanel-toggler"
@@ -60,7 +60,6 @@
                   </svg>
                 </a>
               </div>
-     
 
               <div class="app-utility-item app-user-dropdown dropdown w-auto">
                 <a
@@ -86,7 +85,9 @@
                   </li>
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a class="dropdown-item" href="login.html">Log Out</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}"
+                      >Log Out</a
+                    >
                   </li>
                 </ul>
               </div>
@@ -147,7 +148,7 @@
 
               <li class="nav-item">
                 <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                <a class="nav-link" href="orders.html">
+                <a class="nav-link" href="{% url 'tutor-courses' %}">
                   <span class="nav-icon">
                     <svg
                       width="1em"
@@ -183,7 +184,7 @@
               <ul class="app-menu footer-menu list-unstyled">
                 <li class="nav-item">
                   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                  <a class="nav-link" href="settings.html">
+                  <a class="nav-link" href="{% url 'logout' %}">
                     <span class="nav-icon">
                       <svg
                         width="1em"
@@ -222,9 +223,9 @@
     <div class="app-wrapper">
       <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
-        	{% block content %}
-	<!-- Content from specific templates will be placed here -->
-	{% endblock %}
+          {% block content %}
+          <!-- Content from specific templates will be placed here -->
+          {% endblock %}
         </div>
         <!--//container-fluid-->
       </div>

@@ -1,12 +1,12 @@
 import json
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from learningapp.models import Course, Material, Assignment, Quiz
 from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
     addAssignmentForm, addMarksForms
-
+from learningapp.utils import is_tutor
 
 def createCourse(request):
     if request.method == "POST":
@@ -44,6 +44,10 @@ def deleteCourse(request, course_id):
 
     return render(request, "tutors/coursedelete.html", {'course': course})
 
+@login_required
+@user_passes_test(is_tutor)
+def home_tutor(request):
+    return render(request, 'tutors/home.html' )
 
 def addMaterial(request):
     if request.method == "POST":
@@ -119,11 +123,12 @@ def deleteAssignment(request, assignment_id):
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
 
 @login_required
-def getcourse(request, user_id):
-    session = request.session['user']
-    if session['usertype'] == '1':
-        courses = Course.objects.filter(tutor_id=user_id)
-        return render(request,'tutors/homepage.html',{'courses':courses})
+@user_passes_test(is_tutor)
+def getcourse(request):
+    user = request.session['user']
+    if user['usertype'] == '1':
+        courses = Course.objects.filter(tutor_id=user['id'])
+        return render(request,'tutors/courses.html',{'courses':courses})
 
 
 def addMarks(request):
