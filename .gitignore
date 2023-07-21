@@ -13,7 +13,7 @@ env/
 *.local
 
 # Ignore static files and media
-/static/
+
 /media/
 
 # Ignore secret keys and sensitive information

@@ -20,10 +20,10 @@ from . import views
 
 urlpatterns = [
     # path('login/',  views.login),
-    path('register/',  views.register),
-    path('login/',  views.login_view, name = "login"),
+    path('register/',  views.register, name="register"),
+    path('login/',  views.login_view ,name="login"),
     path('getmaterial/<int:course_id>', views.getmaterial),
     path('tutors/',include('learningapp.tutors.urls')),
     path('students/',include('learningapp.students.urls')),
-    path('logout_user/',views.logout_view)
+    path('logout/',views.logout_view,name='logout')
 ]

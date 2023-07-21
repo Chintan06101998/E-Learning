@@ -13,7 +13,8 @@ urlpatterns = [
     path('addassignment/', views.addAssignment),
     path('updateassignment/<int:assignment_id>', views.updateAssignment),
     path('deleteassignment/<int:assignment_id>', views.deleteAssignment),
-    path('/<int:user_id>', views.getcourse, name = "homepage"),
+    path('home', views.home_tutor, name = "tutor-home"),
+    path('courses', views.getcourse, name = "tutor-courses"),
     path('addmarks/', views.addMarks),
     path('createquiz/', views.createquiz),
     path('updatequiz/<int:quiz_id>', views.updateQuiz)

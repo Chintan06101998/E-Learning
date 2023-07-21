@@ -3,7 +3,14 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from learningapp.models import Material, Users
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
+from django.shortcuts import render, HttpResponseRedirect
+
+from learningapp.models import Course, Material
 from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
+from .models import Users  # Import your custom User model
 
 
 def register(request):
@@ -19,6 +26,7 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
+
 
 
 def login_view(request):
@@ -43,13 +51,13 @@ def login_view(request):
                     # Access custom fields of the User model here
                     user_type = user.user_type
                     memberShip = user.memberShip
-                    if int(user_type) != 0:
+                    if int(user_type) == 0:
                         # render student view
                         form = LoginForm()
-                        response = HttpResponseRedirect(reverse("homepage", args=[user.id]))
+                        response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
                         return response
                     else:
-                        return HttpResponseRedirect("/" + user.id)
+                        return HttpResponseRedirect(reverse('tutor-home'))
                         # render tutor view
             except Users.DoesNotExist:
                 form.add_error(None, 'No such user exists.')
@@ -57,8 +65,20 @@ def login_view(request):
             form.add_error(None, 'Invalid username or password')
     else:
         if not request.session.is_empty():
-            user = request.session['user']
-            return HttpResponseRedirect(reverse("homepage", args=[user['id']]))
+            if('user' in request.session):
+                user = request.session['user']
+                print(user)
+                if int(user['usertype']) == 0:
+                    # render student view
+                    form = LoginForm()
+                    response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
+                    return response
+                else:
+                    # render tutor view
+                    return HttpResponseRedirect(reverse('tutor-home'))
+                  
+            else:
+                 form = LoginForm()
         else:
             form = LoginForm()
 
