@@ -1,14 +1,14 @@
 {% extends 'learningapp/base_tutor.html' %} {% block content %}
 <div class="container-xl pt-3 p-md-3 p-lg-4">
   <div class="" style="height: calc(100vh - 120px)">
-    <h1 class="app-page-title">Add Material</h1>
+    <h1 class="app-page-title">Add Assignemnt</h1>
 
     <div class="app-card app-card-settings shadow-sm p-4">
       <div class="app-card-body">
         <form class="settings-form" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="mb-3">
-            <label for="id_name" class="form-label">Material Name</label>
+            <label for="id_name" class="form-label">Assignemnt Name</label>
             <input
               type="text"
               name="name"
@@ -21,7 +21,7 @@
           </div>
           <div class="mb-3">
             <label for="id_description" class="form-label"
-              >Material Description</label
+              >Assignemnt Description</label
             >
             <textarea
               name="description"
@@ -35,7 +35,7 @@
 
           <div class="mb-3">
             <label for="id_document" class="form-label"
-              >Material Document</label
+              >Assignemnt Document</label
             >
             <input
               class="form-control"
@@ -45,7 +45,45 @@
               id="id_document"
             />
           </div>
+          <div class="mb-3">
+            <label for="id_due_date" class="form-label"
+              >Assignemnt Due Date</label
+            >
+            <input
+              type="date"
+              name="due_date"
+              placeholder="yyyy-mm-dd"
+              class="form-control"
+              required
+              id="id_due_date"
+            />
+          </div>
 
+          <div class="mb-3">
+            <label for="id_due_time" class="form-label"
+              >Assignemnt Due Time</label
+            >
+            <input
+              type="time"
+              name="due_time"
+              placeholder="HH:MM:SS"
+              class="form-control"
+              required
+              id="id_due_time"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="id_grade" class="form-label">Assignemnt Grade</label>
+            <input
+              type="number"
+              name="grade"
+              value="0"
+              min="0"
+              required
+              id="id_grade"
+              class="form-control"
+            />
+          </div>
           <button type="submit" class="btn app-btn-primary w-100">
             Create
           </button>

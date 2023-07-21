@@ -31,7 +31,7 @@ env/
 
 # Ignore project settings files
 *.settings
-
+/static/course_materials
 # Ignore generated documentation
 /docs/_build/
 

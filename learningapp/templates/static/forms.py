@@ -28,7 +28,7 @@ class LoginForm(AuthenticationForm):
 class CreateCourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['name','description','tutor']
+        fields = ['name','description']
 
 class UpdateCourseForm(forms.ModelForm):
     class Meta:
@@ -38,13 +38,13 @@ class UpdateCourseForm(forms.ModelForm):
 class addMaterialForm(forms.ModelForm):
     class Meta:
         model = Material
-        fields = '__all__'
+        fields =['name','description','document']
 
 class addAssignmentForm(forms.ModelForm):
 
     class Meta:
         model = Assignment
-        fields = '__all__'
+        fields = ['name','description','document','due_date','due_time','grade']
         widgets = {
             'due_date': forms.DateInput(
                 attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}

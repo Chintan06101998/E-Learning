@@ -41,26 +41,26 @@ class Course(models.Model):
 class Material(models.Model):
     id = models.AutoField(primary_key=True)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='materials')
-    material_name = models.CharField(max_length=255)
-    material_disc = models.CharField(max_length=255)
-    document = models.FileField(upload_to='course_materials/documents',null=True)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    document = models.FileField(upload_to='static/course_materials/documents',null=True)
     #assignment = models.FileField(upload_to='course_materials/assignments')
     #end_date = models.DateField()
     #aaignment_grade = models.IntegerField()
 
     def __str__(self):
-        return  self.material_name
+        return  self.name
 
 class Assignment(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
-    assignment_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    document = models.FileField(upload_to='course_materials/documents', null=True)
+    document = models.FileField(upload_to='static/course_materials/documents', null=True)
     due_date = models.DateField(null=True)
     due_time = models.TimeField(null=True)
     grade = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return  self.assignment_name
+        return  self.name
 
 
 
