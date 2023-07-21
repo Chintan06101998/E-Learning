@@ -61,7 +61,8 @@
                 </a>
               </div>
 
-              <div class="app-utility-item app-user-dropdown dropdown w-auto">
+              <div class="app-utility-item  app-user-dropdown dropdown w-auto" style="margin-left:auto;">
+                {% if user %} {{ user.username }} {% endif %}
                 <a
                   class="dropdown-toggle"
                   id="user-dropdown-toggle"
@@ -107,7 +108,7 @@
             >&times;</a
           >
           <div class="app-branding">
-            <a class="app-logo" href="index.html"
+            <a class="app-logo" href="{% url 'login' %}"
               ><img
                 class="logo-icon me-2"
                 src="https://themes.3rdwavemedia.com/demo/portal/assets/images/app-logo.svg"
@@ -121,7 +122,7 @@
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
               <li class="nav-item">
                 <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                <a class="nav-link active" href="index.html">
+                <a class="nav-link active" href="{% url 'login' %}">
                   <span class="nav-icon">
                     <svg
                       width="1em"
@@ -221,12 +222,12 @@
     <!--//app-header-->
 
     <div class="app-wrapper">
-      <div class="app-content pt-3 p-md-3 p-lg-4">
-        <div class="container-xl">
+      <div class="app-content  ">
+        {% comment %} <div class="container-xl"> {% endcomment %}
           {% block content %}
           <!-- Content from specific templates will be placed here -->
           {% endblock %}
-        </div>
+        {% comment %} </div> {% endcomment %}
         <!--//container-fluid-->
       </div>
       <!--//app-content-->
