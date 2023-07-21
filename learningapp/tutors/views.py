@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from learningapp.models import Course, Material, Assignment, Quiz
+from learningapp.models import Course, Material, Assignment, Quiz, Users
 from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
     addAssignmentForm, addMarksForms
 from learningapp.utils import is_tutor
@@ -128,6 +128,9 @@ def getcourse(request):
     user = request.session['user']
     if user['usertype'] == '1':
         courses = Course.objects.filter(tutor_id=user['id'])
+        courseses = Course.objects.filter(pk=1)
+        students  = courseses.students.all()
+        print("---->")
         return render(request,'tutors/courses.html',{'courses':courses})
 
 
