@@ -3,7 +3,14 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from learningapp.models import Material, Users
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
+from django.shortcuts import render, HttpResponseRedirect
+
+from learningapp.models import Course, Material
 from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
+from .models import Users  # Import your custom User model
 
 
 def register(request):
@@ -20,6 +27,10 @@ def register(request):
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
 
+
+def home_tutor(request):
+
+    return render(request, 'tutors/home.html' )
 
 def login_view(request):
     if request.method == 'POST':

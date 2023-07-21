@@ -1,36 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'learningapp/base.html' %}
+{% block title %}Login | My Django App{% endblock %}
 
-<form method="POST" action="">
- {% csrf_token %}
-   {{ form.username.label }}
-    {{ form.username }} <br>
+{% block content %}
+<div class="row">
 
-    {{ form.email.label }}
-    {{ form.email }}
-    <br>
+    <!-- Right side: Full Image -->
+    <div class="col-lg-8 col-md-12 p-2">
+        <img src="https://i.ibb.co/Lt5YqhY/Mobile-login.gif style="height: calc(100vh - 60px);" class="img-fluid d-none d-lg-block" alt="Random Image">
+    </div>
+  
+    <!-- Left side: Login Form -->
+    <div class="col-lg-4 col-md-12 d-flex justify-content-center align-items-center">
+        <form class="my-5 w-100" method="post">
+            {% csrf_token %}
+            <h2 class="h3 mb-4">Create Account</h2>
+            <!-- Your login form here -->
+            <div class="form-group mb-3">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group  mb-3">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group  mb-3">
+                <label for="password1">Password</label>
+                <input type="password" class="form-control" id="password1" name="password1" required>
+            </div>
+            <div class="form-group  mb-3">
+                <label for="password2">Confirm Password</label>
+                <input type="password" class="form-control" id="password2" name="password2" required>
+            </div>
 
-    {{ form.password1.label }}
-    {{ form.password1 }}
-<br>
-       {{ form.password2.label }}
-    {{ form.password2 }}
-<br>
+            <div class="form-group  mb-3">
+                <label for="id_user_type">User Type</label>
+                <select class="form-control w-100" name="user_type" id="id_user_type">
+                    <option value="0" selected>Student</option>
+                    <option value="1">Professor</option>
+                </select>
+            </div>
 
+            <div class="form-group  mb-3">
+                <label for="id_memberShip" class="d-block">Membership</label>
+                <select class="form-control w-100" name="memberShip" id="id_memberShip">
+                    <option value="F" selected>Free</option>
+                    <option value="S">Silver</option>
+                    <option value="G">Gold</option>
+                    <option value="P">Premium</option>
+                </select>
+            </div>
 
-    {{ form.user_type.label }}
-    {{ form.user_type }}
-<br>
-    {{ form.memberShip.label }}
-    {{ form.memberShip }}
-
-{#    {{ form.as_p }}#}
-    <input type="submit" name="create user">
-</form>
-</body>
-</html>
+            <div class="mb-3">Already have an account? <a href="{% url 'login' %}">Sign in here</a></div>
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

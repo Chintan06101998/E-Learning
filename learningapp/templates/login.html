@@ -1,4 +1,54 @@
-<!DOCTYPE html>
+<!-- {% extends 'learningapp/base.html' %}
+{% block title %}Login | My Django App{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Right side: Full Image -->
+    <div class="col-lg-8 col-md-12 p-2">
+ 
+      <img src="https://cdni.iconscout.com/illustration/premium/thumb/app-login-security-4897468-4077880.png" style="height: calc(100vh - 60px);" class="img-fluid d-none d-lg-block" alt="Random Image">
+  </div>
+
+  <!-- Left side: Login Form -->
+  <div class="col-lg-4 col-md-12 d-flex justify-content-center align-items-center">
+    <form class="my-5 w-100" method="post">
+      {% csrf_token %}
+      <h2 class="h3 mb-3 mb-sm-5">Hey there!<br>Welcome back.</h2>
+      <!-- Your login form here -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+        />
+      </div>
+      <div  class="mb-3">Don't have an account? <a href="{% url 'register' %}">Sign up here</a></div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+
+
+    
+  </div>
+</div>
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,4 +63,4 @@
   </form>
 
 </body>
-</html>
+</html> --> -->
