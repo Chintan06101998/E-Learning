@@ -68,8 +68,11 @@ def login_view(request):
             form.add_error(None, 'Invalid username or password')
     else:
         if not request.session.is_empty():
-            user = request.session['user']
-            return HttpResponseRedirect(reverse("homepage", args=[user['id']]))
+            if('user' in request.session):
+                user = request.session['user']
+                return HttpResponseRedirect(reverse("homepage", args=[user['id']]))
+            else:
+                 form = LoginForm()
         else:
             form = LoginForm()
 
