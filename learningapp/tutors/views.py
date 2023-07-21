@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from learningapp.models import Course, Material, Assignment, Quiz
@@ -117,11 +118,12 @@ def deleteAssignment(request, assignment_id):
 
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
 
-
+@login_required
 def getcourse(request, user_id):
-    course = Course.objects.filter(tutor_id=user_id)
-    print("--->", course)
-    return HttpResponse('get Course')
+    session = request.session['user']
+    if session['usertype'] == '1':
+        courses = Course.objects.filter(tutor_id=user_id)
+        return render(request,'tutors/homepage.html',{'courses':courses})
 
 
 def addMarks(request):
