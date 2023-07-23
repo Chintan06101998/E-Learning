@@ -3,12 +3,14 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from learningapp.models import Material, Users, Question, Quiz, Option
+from requests import session
+from learningapp.models import Material, Users
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect
 
-from learningapp.models import Course, Material
+from learningapp.models import Course, Material, StudentCourses
 from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
 from .models import Users  # Import your custom User model
 
@@ -54,7 +56,7 @@ def login_view(request):
                     if int(user_type) == 0:
                         # render student view
                         form = LoginForm()
-                        response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
+                        response = HttpResponseRedirect(reverse("student-home"))
                         return response
                     else:
                         return HttpResponseRedirect(reverse('tutor-home'))
@@ -71,7 +73,7 @@ def login_view(request):
                 if int(user['usertype']) == 0:
                     # render student view
                     form = LoginForm()
-                    response = HttpResponseRedirect(reverse("tutor-home", args=[user.id]))
+                    response = HttpResponseRedirect(reverse("student-home"))
                     return response
                 else:
                     # render tutor view

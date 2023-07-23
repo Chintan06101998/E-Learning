@@ -7,6 +7,7 @@ import json
 from django.db.models import JSONField
 
 
+
 class Users(User):
     MEMBERSHIP_CHOICE = [
         ('F', 'Free'),
@@ -29,7 +30,7 @@ class Users(User):
 class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    # enrolled_student = models.OneToOneField(Users, on_delete=models.CASCADE)
+    #enrolled_student = models.OneToOneField(Users, on_delete=models.CASCADE)
     tutor = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='courses_tutored')
     students = models.ManyToManyField(Users, related_name='enrolled_courses')  # adding when student when register
     createdAt = models.DateField(default=datetime.date.today)
@@ -37,6 +38,9 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+class StudentCourses(models.Model):
+    user = models.ForeignKey(Users,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE)
 
 class Material(models.Model):
     id = models.AutoField(primary_key=True)
@@ -86,6 +90,14 @@ class Results(models.Model):
     type = models.CharField(max_length=20, choices=TYPE, default='assignment')
     grade = models.PositiveIntegerField(default=0)
 
+
+
+class AssignmentAnswer(models.Model):
+    assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Users, on_delete=models.CASCADE)
+    answer = models.FileField(upload_to='course_materials/documents', null=True)
+    submission_date = models.DateField(null=True, auto_now=True)
+    submission_time = models.TimeField(null=True, auto_now=True)
 
 class Subscription(models.Model):
     SUBSCRIPTION_CHOICES = [

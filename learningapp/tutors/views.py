@@ -23,7 +23,7 @@ def createCourse(request):
             form1.save()
             return HttpResponseRedirect(reverse('tutor-courses'))
     else:
-        form = CreateCourseForm()
+        form = CreateCourseForm(initial={'name':'','description':''})
     return render(request, "tutors/coursecreate.html", {'form': form})
 
 @login_required
@@ -63,19 +63,20 @@ def updateCourse(request, course_id):
         form = UpdateCourseForm(request.POST, instance=course)
         if form.is_valid():
             form.save()
-            return HttpResponse('course_detail')
+            return HttpResponseRedirect(reverse('tutor-courses'))
     else:
         form = UpdateCourseForm(instance=course)
 
-    return render(request, "tutors/courseupdate.html", {'form': form})
+    return render(request, "tutors/coursecreate.html", {'form': form})
 
-
+@login_required
+@user_passes_test(is_tutor)
 def deleteCourse(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
     if request.method == "POST":
         course.delete()
-        return HttpResponse('course_list')  # Redirect to the course list page after deletion
+        return HttpResponseRedirect(reverse('tutor-courses'))
 
     return render(request, "tutors/coursedelete.html", {'course': course})
 
@@ -97,30 +98,35 @@ def addMaterial(request,course_id):
             form1.save()
             return HttpResponseRedirect(reverse('tutor-view-course-material',args=[course_id]))
     else:
-        form = addMaterialForm()
+        form = addMaterialForm(initial={'name':'','description':''})
     return render(request, "tutors/addmaterial.html", {'form': form})
 
 
+@login_required
+@user_passes_test(is_tutor)
 def updateMaterial(request, material_id):
     material = get_object_or_404(Material, pk=material_id)
+    fakepath=''
     if request.method == "POST":
         form = addMaterialForm(request.POST, request.FILES, instance=material)
         if form.is_valid():
             form.save()
-            return HttpResponse(
-                'material_list')  # Replace 'material_list' with the URL name of your material list view.
+            return HttpResponseRedirect(reverse('tutor-view-course-material',args=[material.course_id.id]))
     else:
-        material.document = ''
         form = addMaterialForm(instance=material)
-    return render(request, "tutors/updatematerial.html", {'form': form, 'material_id': material_id})
+        patharr= material.document.name.split('/')
+        fakepath = '/fakepath/'+patharr[len(patharr)-1]
 
+    return render(request, "tutors/addmaterial.html", {'form': form, 'material_id': material_id,'fakepath':fakepath})
 
+@login_required
+@user_passes_test(is_tutor)
 def deleteMaterial(request, material_id):
     material = get_object_or_404(Material, pk=material_id)
 
     if request.method == "POST":
         material.delete()
-        return HttpResponse('Successfully Delete')  # Redirect to the course list page after deletion
+        return HttpResponseRedirect(reverse('tutor-view-course-material',args=[material.course_id.id]))
 
     return render(request, "tutors/materialdelete.html", {'material': material})
 
@@ -140,31 +146,37 @@ def addAssignment(request,course_id):
         else:
             print(form.add_error())
     else:
-        form = addAssignmentForm()
+        form = addAssignmentForm(initial={'name':'','description':'','initial_due_time':'','initial_due_date':''})
     return render(request, "tutors/createAssignment.html", {'form': form})
 
 
+@login_required
+@user_passes_test(is_tutor)
 def updateAssignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
+    initial_due_time=''
+    initial_due_date=''
     if request.method == "POST":
         form = addAssignmentForm(request.POST, request.FILES, instance=assignment)
         if form.is_valid():
             form.save()
-            return HttpResponse(
-                'Assignment updated Successfully')  # Replace 'material_list' with the URL name of your material list view.
+            return HttpResponseRedirect(reverse('tutor-view-course-assignments',args=[assignment.course_id.id])) 
     else:
-        assignment.document = ''
         form = addAssignmentForm(instance=assignment)
-    return render(request, "tutors/updatematerial.html", {'form': form, 'assignment_id': assignment_id})
+        patharr= assignment.document.name.split('/')
+        fakepath = '/fakepath/'+patharr[len(patharr)-1]
+        initial_due_time = assignment.due_time.strftime('%H:%M')
+        initial_due_date= assignment.due_date.strftime('%Y-%m-%d')
+    return render(request, "tutors/createAssignment.html", {'form': form, 'assignment_id': assignment_id,'fakepath':fakepath, 'initial_due_time':initial_due_time,'initial_due_date':initial_due_date})
 
-
+@login_required
+@user_passes_test(is_tutor)
 def deleteAssignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
 
     if request.method == "POST":
         assignment.delete()
-        return HttpResponse('Successfully Deleted')  # Redirect to the course list page after deletion
-
+        return HttpResponseRedirect(reverse('tutor-view-course-assignments',args=[assignment.course_id.id])) 
     return render(request, "tutors/materialdelete.html", {'assignment': assignment})
 
 @login_required
