@@ -10,4 +10,6 @@ urlpatterns = [
     path('browse-courses', views.getAvailableCourses, name = "student-browse-courses"),
     path('enroll-course/<int:course_id>', views.enrollCourse, name = "student-enroll-course"),
 
+    path('getallcourses',views.getallcourse),
+    path('assignment-submit', views.assignment_submission, name='assignment-submission')
 ]

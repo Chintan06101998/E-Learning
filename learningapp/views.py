@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from learningapp.models import Material, Users, Question, Quiz, Option
 from requests import session
 from learningapp.models import Material, Users
 from django.contrib.auth import authenticate, login
@@ -94,3 +95,18 @@ def getmaterial(request, course_id):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
+def showquiz(request,quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+
+    return render(request,'quiz.html',{'quiz':quiz})
+
+# def questiondisplay(request):
+#     quiz = Quiz.objects.filter(pk=41)
+#     que = Question.objects.filter(quiz=quiz)
+#     option = Option.objects.filter(que=)
+#
+#     for a in que:
+#         print("---->", a)
+#
+    # return  HttpResponse("Hello")

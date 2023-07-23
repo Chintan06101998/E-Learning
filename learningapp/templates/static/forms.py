@@ -1,12 +1,14 @@
 import datetime
+import json
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.forms import inlineformset_factory
 from django.contrib.auth.models import User
 
 from django import forms
 from django.forms import ModelForm
 
-from learningapp.models import Course, Users, Material, Assignment, Results, AssignmentAnswer
+from learningapp.models import Course, Users, Material, Assignment, Results, AssignmentAnswer, Quiz, Question
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -71,3 +73,26 @@ class uploadAnswerForm(forms.ModelForm):
     class Meta:
         model = AssignmentAnswer
         fields = "__all__"
+
+
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['question_text','marks']
+
+
+QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
+
+class AddQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']
+
+
+
+class UpdateQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']
+
+

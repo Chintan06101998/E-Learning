@@ -5,15 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f13e3c6-de84-440e-9a95-2659fe1b8515" name="Changes" comment="Added">
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/homepage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/quiz.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/assignment_submission.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/assignmentupload.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/add_quiz.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/tutor_quiz.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/update_quiz.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/students/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/students/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/static/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/static/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/tutors/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/tutors/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/tutors/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/tutors/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/static/forms.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +70,8 @@
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/chintanpatel/PycharmProjects/djangoProject/learningapp/templates&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;development&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chintanpatel/PycharmProjects/djangoProject/learningapp/templates/tutors&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -73,9 +82,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/learningapp/templates/tutors" />
       <recent name="$PROJECT_DIR$/learningapp/templates" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/learningapp/templates/tutors" />
       <recent name="$PROJECT_DIR$/learningapp/tutors" />
       <recent name="$PROJECT_DIR$/learningapp/students" />
     </key>
@@ -136,6 +145,10 @@
       <workItem from="1689824848969" duration="2167000" />
       <workItem from="1689862359393" duration="38000" />
       <workItem from="1689866904723" duration="761000" />
+      <workItem from="1689924580956" duration="9275000" />
+      <workItem from="1689964784851" duration="13822000" />
+      <workItem from="1689984738413" duration="27373000" />
+      <workItem from="1690068509707" duration="13477000" />
     </task>
     <task id="LOCAL-00001" summary="Added">
       <created>1689884542079</created>
@@ -144,7 +157,28 @@
       <option name="project" value="LOCAL" />
       <updated>1689884542079</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added">
+      <created>1689911404114</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1689911404114</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added">
+      <created>1689924624452</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1689924624453</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added">
+      <created>1689924642629</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1689924642631</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,7 +200,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="dev" />
                       </list>
                     </value>
                   </entry>
@@ -181,5 +215,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added" />
     <option name="LAST_COMMIT_MESSAGE" value="Added" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/learningapp/tutors/views.py</url>
+          <line>10</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

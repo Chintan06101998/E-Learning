@@ -18,8 +18,9 @@ urlpatterns = [
     path('edit-course-assignment/<int:assignment_id>', views.updateAssignment,name='tutor-edit-course-assignment'),
     path('delete-course-assignment/<int:assignment_id>', views.deleteAssignment,name='tutor-delete-course-assignment'),
     path('home', views.home_tutor, name = "tutor-home"),
-    path('courses', views.getcourse, name = "tutor-courses"),
+    path('courses/', views.getcourse, name = "tutor-courses"),
     path('addmarks/', views.addMarks),
-    path('createquiz/', views.createquiz),
-    path('updatequiz/<int:quiz_id>', views.updateQuiz)
+    path('createquiz/', views.add_quiz, name="tutor_add_quiz"),
+    path('update/<int:quiz_id>', views.update_quiz, name="update")
+
 ]
