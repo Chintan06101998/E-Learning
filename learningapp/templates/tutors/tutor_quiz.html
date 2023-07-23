@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Quiz</title>
+  <script>
+    function addQuestion() {
+      const questionsContainer = document.getElementById('questions-container');
+      const totalQuestions = parseInt(document.getElementById('id_questions-TOTAL_FORMS').value);
+      const newQuestionHTML = `
+        <div>
+          <h3>Question ${totalQuestions + 1}</h3>
+          <p>
+            <label for="id_questions-${totalQuestions}-question">Question:</label>
+            <input type="text" name="questions-${totalQuestions}-question" required>
+          </p>
+          <p>
+            <label for="id_questions-${totalQuestions}-option1">Option 1:</label>
+            <input type="text" name="questions-${totalQuestions}-option1" required>
+          </p>
+          <p>
+            <label for="id_questions-${totalQuestions}-option2">Option 2:</label>
+            <input type="text" name="questions-${totalQuestions}-option2" required>
+          </p>
+          <p>
+            <label for="id_questions-${totalQuestions}-option3">Option 3:</label>
+            <input type="text" name="questions-${totalQuestions}-option3" required>
+          </p>
+          <p>
+            <label for="id_questions-${totalQuestions}-option4">Option 4:</label>
+            <input type="text" name="questions-${totalQuestions}-option4" required>
+          </p>
+          <p>
+            <label for="id_questions-${totalQuestions}-answer">Select Correct Option:</label>
+            <select name="questions-${totalQuestions}-answer" required>
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+              <option value="option3">Option 3</option>
+              <option value="option4">Option 4</option>
+            </select>
+          </p>
+          <hr>
+        </div>
+      `;
+      const div = document.createElement('div');
+      div.innerHTML = newQuestionHTML;
+      questionsContainer.appendChild(div);
+      document.getElementById('id_questions-TOTAL_FORMS').value = totalQuestions + 1;
+    }
+  </script>
+</head>
+<body>
+  <h1>Edit Quiz</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ quiz_form.as_p }}
+    <div id="questions-container">
+      {% for i in quiz_form.questions %}
+        <div>
+          <h3>Question {{ forloop.counter }}</h3>
+          {{ i.as_p }}
+          <p>
+            <label>Select Correct Option:</label>
+            {{ i.correct_option }}
+          </p>
+          <hr>
+        </div>
+      {% endfor %}
+    </div>
+    <button type="button" onclick="addQuestion()">Add Question</button>
+    <button type="submit">Save Changes</button>
+  </form>
+</body>
+</html>

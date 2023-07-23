@@ -5,5 +5,6 @@ from . import views
 
 urlpatterns = [
     path('getallcourses',views.getallcourse),
-    path('uploadanswer/<int:assignment_id>',views.uploadAnswer)
+    path('uploadanswer/<int:assignment_id>',views.uploadAnswer),
+    path('assignment-submit', views.assignment_submission, name='assignment-submission')
 ]

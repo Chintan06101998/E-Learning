@@ -1,0 +1,23 @@
+<!-- assignment_details.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Assignment Details</title>
+</head>
+<body>
+    <h1>Assignment Name: {{ assignment.name }}</h1>
+    <p>Description: {{ assignment.description }}</p>
+    <p>Due Date: {{ assignment.due_date }}</p>
+    <p>Due Time: {{ assignment.due_time }}</p>
+
+{#    {% if submission %}#}
+{#        <p>Your Submission: <a href="{{ submission.document.url }}" target="_blank">View</a></p>#}
+{#    {% else %}#}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+
+</body>
+</html>

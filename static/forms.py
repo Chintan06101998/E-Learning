@@ -5,7 +5,13 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-from learningapp.models import Course, Users, Material, Assignment, MaterialAnswer, Results
+from learningapp.models import Course, Users, Material, Assignment, AssignmentAnswer, Results
+
+class addSubmissionForm(forms.ModelForm):
+
+    class Meta:
+        model = AssignmentAnswer
+        fields = ['document']
 
 
 class UserRegistrationForm(UserCreationForm):
