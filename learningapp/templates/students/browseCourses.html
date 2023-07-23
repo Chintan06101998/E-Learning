@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-3 mb-4 align-items-center justify-content-between">
         <div class="col-auto">
-          <h1 class="app-page-title mb-0">Enrolled Courses</h1>
+          <h1 class="app-page-title mb-0">Available Courses</h1>
         </div>
         <!--//col-auto-->
       </div>
@@ -21,7 +21,7 @@
           <div class="app-card app-card-orders-table shadow-sm mb-5">
             <div class="app-card-body">
               <div class="table-responsive">
-                <table class="table app-table-hover mb-0 text-left">    
+                <table class="table app-table-hover mb-0 text-left">
                   <thead>
                     <tr>
                       <th class="cell">Course #</th>
@@ -33,9 +33,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for course in enrolled_courses %}
+                    {% for course in available_courses %}
                     <tr>
                       <td class="cell">{{course.id}}</td>
+
                       <td class="cell">{{course.name}}</td>
                       <td class="cell">
                         <span 
@@ -49,9 +50,47 @@
                         <span>{{ course.createdAt }}</span>
                       </td>
                       <td class="cell">
-                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">View</a>
+                        <a class="btn-sm app-btn-secondary"  data-toggle="modal" href="#enrollCourseModal{{ course.id }}">Enroll</a>
                       </td>
                     </tr>
+                    <div id="enrollCourseModal{{ course.id }}" class="modal fade">
+                      <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">Enroll Courses</h4>
+                          </div>
+                          <div class="modal-body text-black">
+                            <p>
+                              Are you sure want to enroll to
+                              <strong>{{ course.name }}</strong> course?
+                            </p>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-info text-white"
+                              data-dismiss="modal"
+                            >
+                              Cancel
+                            </button>
+                            <form
+                              method="post"
+                              action="{% url 'student-enroll-course' course.id %}"
+                            >
+                              {% csrf_token %}
+                              <button
+                                type="submit"
+                                class="btn btn-success text-white"
+                                style="background: green"
+                              >
+                                Enroll
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {% endfor %}
                   </tbody>
                 </table>

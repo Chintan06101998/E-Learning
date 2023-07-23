@@ -7,6 +7,7 @@ import json
 from django.db.models import JSONField
 
 
+
 class Users(User):
     MEMBERSHIP_CHOICE = [
         ('F', 'Free'),
@@ -27,6 +28,9 @@ class Users(User):
 
 
 
+    
+
+
 class Course(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -37,6 +41,11 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class StudentCourses(models.Model):
+    user = models.ForeignKey(Users,on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,on_delete=models.CASCADE)
 
 class Material(models.Model):
     id = models.AutoField(primary_key=True)
