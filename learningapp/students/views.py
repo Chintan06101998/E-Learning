@@ -1,13 +1,7 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
-
-from learningapp.models import Course, Material, Assignment, Users, AssignmentAnswer
-from learningapp.templates.static.forms import uploadAnswerForm, addMaterialForm
+from django.shortcuts import render, get_object_or_404
 from static.forms import addSubmissionForm
-from learningapp.models import Course, Material, Assignment, Users, StudentCourses
-from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
-    addAssignmentForm, uploadAnswerForm
+from learningapp.models import Course, Material, Assignment, Users, StudentCourses, AssignmentAnswer
+from learningapp.templates.static.forms import uploadAnswerForm
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from learningapp.utils import is_student
 from django.http import HttpResponse,HttpResponseRedirect
@@ -25,7 +19,6 @@ def getallcourse(request):
     courses = Course.objects.all()
     return render(request, './students/courselist.html', {'courses': courses})
 
-
 def uploadAnswer(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
 
@@ -42,23 +35,34 @@ def uploadAnswer(request, assignment_id):
         form = uploadAnswerForm()
         return render(request, './tutors/addmaterial.html', {'form': form})
 
-def assignment_submission(request):
-    assignment = get_object_or_404(Assignment, id=1)
+def view_course_details(request, course_id):
+    print("Course_id",course_id)
+    course_details = Course.objects.get(id=course_id)
+    return render(request, "students/course_detail.html",{'course_details':course_details})
+
+def assignment_submission(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+
     user_id = None
     if 'user' in request.session:
         data = request.session['user']
         user_id = data['id']
     else:
         print("Not here")
-
     user = get_object_or_404(Users, pk=user_id)
+
 
     if request.method == "POST":
         form = addSubmissionForm(request.POST, request.FILES)
         if form.is_valid():
             form1 = form.save(commit=False)
             form1.assignment = assignment
+            # form1.assignment.user = user
+            # form1.assignment.is_submitted = True
+            # form1.assignment.course_id = assignment.course_id
             form1.student = user
+            form1.course = assignment.course_id
+
             form1.save()
             return HttpResponse('successfull')
     else:
@@ -67,7 +71,7 @@ def assignment_submission(request):
     # if AssignmentAnswer.objects.filter(assignment=assignment, student=request.user).exists():
     #     submission = AssignmentAnswer.objects.get(assignment=assignment, student=request.user)
 
-    return render(request, "students/assignment_submission.html", {'assignment': assignment,'form': form})
+    return render(request, "students/assignment_submission.html", {'course_details': assignment.course_id,'assignment': assignment,'form': form})
 
 
 # def addMaterial(request,course_id):
@@ -87,8 +91,8 @@ def assignment_submission(request):
 def viewCourseAssignments(request,course_id):
     course_details = Course.objects.get(id=course_id)
     assignments = Assignment.objects.filter(course_id=course_id)
-    return HttpResponse('Successfully')
-    # return render(request, "tutors/courseAssignments.html",{'course_details':course_details,'course_assignments':assignments})
+    return  render(request, "students/view_assignment.html",{'course_details':course_details,'course_assignments':assignments})
+
 def getQuizesByCourseId(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
@@ -105,14 +109,13 @@ def getAvailableCourses(request):
 def getEnrolledCourses(request):
     user = request.session['user']
     course = Course.objects.filter(students__id=user['id'])
-    print(course[0].tutor.username)
+
     return render(request, './students/courselist.html', {'enrolled_courses':course})
 
 def enrollCourse(request,course_id):
     user = request.session['user']
     i_user = get_object_or_404(Users,pk=user['id'])
     course = get_object_or_404(Course,pk=course_id)
-    # Check if the student is already enrolled in the course
     is_enrolled = StudentCourses.objects.filter(user=i_user, course=course).exists()
 
     print(is_enrolled)
@@ -129,3 +132,8 @@ def enrollCourse(request,course_id):
         pass #already enrolled
 
     return HttpResponseRedirect(reverse('student-courses'))
+
+def view_materials(request, course_id):
+    material_details = Material.objects.filter(course_id_id=course_id)
+    course_details = Course.objects.get(id=course_id)
+    return render(request, "students/view_material.html",{'course_details':course_details,'course_materials':material_details})

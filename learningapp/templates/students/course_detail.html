@@ -1,0 +1,62 @@
+{% extends 'learningapp/base_student.html' %} {% block content %}
+
+  <div style=" background:#b0f7d8" class="w-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          
+   
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            <li class="nav-item" >
+                <a class="nav-link active" href="{% url 'view-course-details' course_details.id  %}">Details</a>
+                </li>
+              <li class="nav-item" >
+                <a class="nav-link" href="{% url 'view-assignment' course_details.id  %}">Material</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'course-assignment' course_details.id  %}">Assignemnts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'tutor-view-course-quizzes' course_details.id  %}">Quizzes</a>
+              </li>
+           
+            </ul>
+          </div>
+        </div>
+      </nav>
+  </div>
+  <div class=" pt-3 p-md-3 p-lg-4" style="height: calc(100vh - 120px)">
+    <h1 class="app-page-title">{{course_details.name}}</h1>
+    <p>{{course_details.description}}</p>
+{#    <h4>Enrolled Students</h4>#}
+
+{#    <div class="app-card app-card-orders-table shadow-sm mb-5">#}
+{#      #}
+{#      <div class="app-card-body">#}
+{#        <div class="table-responsive">#}
+{#          <table class="table app-table-hover mb-0 text-left">#}
+{#            <thead>#}
+{#              <tr>#}
+{#                <th class="cell">Student #</th>#}
+{#                <th class="cell">Name</th>#}
+{#              </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#              {% for student in enrolled_students %}#}
+{#              <tr>#}
+{#                <td class="cell">{{student.id}}</td>#}
+{##}
+{#                <td class="cell">{{student.username}}s</td>#}
+{#              </tr>#}
+{#              {% endfor %}#}
+{#            </tbody>#}
+{#          </table>#}
+{#        </div>#}
+{#        <!--//table-responsive-->#}
+{#      </div>#}
+{#      <!--//app-card-body-->#}
+{#    </div>#}
+    <!--//app-card-->
+  </div>
+
+{% endblock %}

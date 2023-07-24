@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
 
-from learningapp.models import Course, Users, Material, Assignment, Results, AssignmentAnswer, Quiz, Question
+from learningapp.models import Course, Users, Material, Assignment, Result, AssignmentAnswer, Result
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -58,7 +58,7 @@ class addAssignmentForm(forms.ModelForm):
 
 class addMarksForms(forms.ModelForm):
     class Meta:
-        model = Results
+        model = Result
         fields = ['grade']
         # widgets = {
         #     'due_date': forms.DateInput(
@@ -74,25 +74,29 @@ class uploadAnswerForm(forms.ModelForm):
         model = AssignmentAnswer
         fields = "__all__"
 
-
-class QuestionForm(forms.ModelForm):
+class GradeForm(forms.ModelForm):
     class Meta:
-        model = Question
-        fields = ['question_text','marks']
+        model = Result
+        fields = "__all__"
 
-
-QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
-
-class AddQuizForm(forms.ModelForm):
-    class Meta:
-        model = Quiz
-        fields = ['quiz_name', 'duration']
-
-
-
-class UpdateQuizForm(forms.ModelForm):
-    class Meta:
-        model = Quiz
-        fields = ['quiz_name', 'duration']
+# class QuestionForm(forms.ModelForm):
+#     class Meta:
+#         model = Question
+#         fields = ['question_text','marks']
+#
+#
+# QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
+#
+# class AddQuizForm(forms.ModelForm):
+#     class Meta:
+#         model = Quiz
+#         fields = ['quiz_name', 'duration']
+#
+#
+#
+# class UpdateQuizForm(forms.ModelForm):
+#     class Meta:
+#         model = Quiz
+#         fields = ['quiz_name', 'duration']
 
 

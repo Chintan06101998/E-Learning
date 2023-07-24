@@ -1,4 +1,30 @@
 {% extends 'learningapp/base_tutor.html' %} {% block content %}
+
+  <div style=" background:#b0f7d8" class="w-100">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            <li class="nav-item" >
+                <a class="nav-link active" href="{% url 'view-course-details' course_details.id   %}">Details</a>
+                </li>
+              <li class="nav-item" >
+                <a class="nav-link" href="{% url 'tutor-view-course-material' course_details.id  %}">Material</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'course-assignment' course_details.id  %}">Assignemnts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'tutor-view-course-quizzes' course_details.id  %}">Quizzes</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+  </div>
 <div class="container-xl pt-3 p-md-3 p-lg-4">
   <div class="" style="height: calc(100vh - 120px)">
     <h1 class="app-page-title">Assignment Submission</h1>

@@ -2,16 +2,15 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from learningapp.models import Material, Users, Question, Quiz, Option
-from requests import session
+from learningapp.models import Material, Users, Assignment, AssignmentAnswer
 from learningapp.models import Material, Users
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.shortcuts import render, HttpResponseRedirect
 
-from learningapp.models import Course, Material, StudentCourses
-from learningapp.templates.static.forms import UserRegistrationForm, LoginForm
+from learningapp.models import Course, Material
+from learningapp.templates.static.forms import UserRegistrationForm, LoginForm, GradeForm
 from .models import Users  # Import your custom User model
 
 
@@ -22,7 +21,7 @@ def register(request):
         if form.is_valid():
             form.save()
             # Redirect to a success page or perform other actions
-            return HttpResponse('success')
+            return HttpResponseRedirect(reverse('login'))
         else:
             return HttpResponse("Error")
     else:
@@ -96,17 +95,18 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
 
-def showquiz(request,quiz_id):
-    quiz = get_object_or_404(Quiz, id=quiz_id)
 
-    return render(request,'quiz.html',{'quiz':quiz})
+def grade_view(request,course_id,assignment_id):
+    course = Course.objects.get(pk=1)
+    assignmentAnswer = AssignmentAnswer.objects.filter(course=course)
 
-# def questiondisplay(request):
-#     quiz = Quiz.objects.filter(pk=41)
-#     que = Question.objects.filter(quiz=quiz)
-#     option = Option.objects.filter(que=)
-#
-#     for a in que:
-#         print("---->", a)
-#
-    # return  HttpResponse("Hello")
+
+    if request.method == 'POST':
+        form = GradeForm(request, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Grade")
+    else:
+        form = GradeForm()
+
+        return render(request, 'tutors/grade.html', {'form':form})

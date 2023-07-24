@@ -20,7 +20,8 @@ urlpatterns = [
     path('home', views.home_tutor, name = "tutor-home"),
     path('courses/', views.getcourse, name = "tutor-courses"),
     path('addmarks/', views.addMarks),
-    path('createquiz/', views.add_quiz, name="tutor_add_quiz"),
-    path('update/<int:quiz_id>', views.update_quiz, name="update")
+    path('assignment-grade/<int:course_id>', views.assignment_grade, name='assignment-grade'),
+    # path('createquiz/', views.add_quiz, name="tutor_add_quiz"),
+    # path('update/<int:quiz_id>', views.update_quiz, name="update")
 
 ]

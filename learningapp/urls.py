@@ -26,5 +26,5 @@ urlpatterns = [
     path('tutors/',include('learningapp.tutors.urls')),
     path('students/',include('learningapp.students.urls')),
     path('logout/',views.logout_view,name='logout'),
-    path('showquiz/<int:quiz_id>',views.showquiz,name='logout'),
+    path('grade_view/',views.grade_view,name='Grade View')
 ]

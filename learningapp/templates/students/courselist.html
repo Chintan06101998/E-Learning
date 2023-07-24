@@ -38,7 +38,7 @@
                       <td class="cell">{{course.id}}</td>
                       <td class="cell">{{course.name}}</td>
                       <td class="cell">
-                        <span 
+                        <span
                           >{{course.description | truncatechars:50}}</span
                         >
                       </td>
@@ -49,7 +49,7 @@
                         <span>{{ course.createdAt }}</span>
                       </td>
                       <td class="cell">
-                        <a class="btn-sm app-btn-secondary" href="{% url 'tutor-view-course' course.id %}">View</a>
+                        <a class="btn-sm app-btn-secondary" href="{% url 'view-course-details' course.id %}">View</a>
                       </td>
                     </tr>
                     {% endfor %}

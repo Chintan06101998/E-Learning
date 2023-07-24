@@ -5,10 +5,9 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-from learningapp.models import Course, Users, Material, Assignment, AssignmentAnswer, Results
+from learningapp.models import Course, Users, Material, Assignment, AssignmentAnswer, Result
 
 class addSubmissionForm(forms.ModelForm):
-
     class Meta:
         model = AssignmentAnswer
         fields = ['document']
@@ -61,7 +60,7 @@ class addAssignmentForm(forms.ModelForm):
 
 class addMarksForms(forms.ModelForm):
     class Meta:
-        model = Results
+        model = Result
         fields = ['grade']
         # widgets = {
         #     'due_date': forms.DateInput(

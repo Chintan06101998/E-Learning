@@ -5,9 +5,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from learningapp.models import Course, Material, Assignment, Quiz, Users, Question, Option, AssignmentAnswer
+from learningapp.models import Course, Material, Assignment, AssignmentAnswer
 from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
-    addAssignmentForm, addMarksForms, AddQuizForm, UpdateQuizForm, QuestionFormSet
+    addAssignmentForm, addMarksForms
 
 from learningapp.utils import is_tutor
 
@@ -219,7 +219,6 @@ def parse_quiz_data(post_data):
         question = {}
         # print("========>Question number : ", i,"<=========")
         question['question'] = post_data.get(f'q-question-{i}')
-
         question['options'] = []
         for j in range(1,5):
             option = post_data.get(f'q-option{j}-{i}')
@@ -234,81 +233,115 @@ def parse_quiz_data(post_data):
 
     return quiz_data
 
-def add_quiz(request):
-    if request.method == 'POST':
-        quiz_data = parse_quiz_data(request.POST)
-        totalMarks = 0
-        quiz = Quiz()
-        quiz.quiz_name = quiz_data['quiz_name']
-        quiz.total_marks = totalMarks
-        duration_str = quiz_data['duration']
-        duration_timedelta = timedelta(hours=int(duration_str[:2]), minutes=int(duration_str[3:5]),
-                                       seconds=int(duration_str[6:]))
-        quiz.duration = duration_timedelta
-        quiz.save()
-
-        for que in quiz_data['questions']:
-            ques = Question()
-            ques.question_text = que["question"]
-            answer_no = que["answer"][-1:]
-            ques.marks = que["marks"]
-            ques.quiz = quiz
-            totalMarks = totalMarks + int(ques.marks)
-            ques.save()
-            count = 1
-            print("-----> :",que["options"])
-            for opt in que["options"]:
-                opts = Option()
-                opts.option_text = opt
-                opts.question = ques
-                if count == answer_no:
-                    opts.is_correct = True
-                count = count + 1
-                opts.save()
-
-        quiz.total_marks = totalMarks
-        quiz.save()
-        return HttpResponse('tutor-view-course-quizzes')  # Redirect to the quiz list page after successful form submission
-    else:
-        form = AddQuizForm()
-
-    return render(request, 'tutors/add_quiz.html', {'quiz_form': form})
-
-
-def update_quiz(request,quiz_id):
-    quiz = get_object_or_404(Quiz, pk=26)
-    # Print all the data from the quiz model
-    print(f"Quiz Name: {quiz.quiz_name}")
-    print(f"Total Marks: {quiz.total_marks}")
-    print(f"Duration: {quiz.duration}")
-    print("Questions:")
-
-    for question in quiz.lstquestion.all():
-        print(f"  Question: {question.question_text}")
-        print(f"  Marks: {question.marks}")
-        print("  Options:")
-        for option in question.lstoption.all():
-            print(f"    - {option.option_text}")
-
-        print()
-
-    if request.method == 'POST':
-        quiz_form = UpdateQuizForm(request.POST, instance=quiz)
-        question_formset = QuestionFormSet(request.POST, instance=quiz)
-        if quiz_form.is_valid() and question_formset.is_valid():
-            quiz_form.save()
-            question_formset.save()
-            # Redirect to the quiz list or some other page after successful form submission
-    else:
-        quiz_form = UpdateQuizForm(instance=quiz)
-        question_formset = QuestionFormSet(instance=quiz)
-
-    return render(request, 'tutors/add_quiz.html', {'quiz_form': quiz_form, 'question_formset': question_formset})
+# def add_quiz(request):
+#     if request.method == 'POST':
+#         quiz_data = parse_quiz_data(request.POST)
+#         totalMarks = 0
+#         quiz = Quiz()
+#         quiz.quiz_name = quiz_data['quiz_name']
+#         quiz.total_marks = totalMarks
+#         duration_str = quiz_data['duration']
+#         duration_timedelta = timedelta(hours=int(duration_str[:2]), minutes=int(duration_str[3:5]),
+#                                        seconds=int(duration_str[6:]))
+#         quiz.duration = duration_timedelta
+#         quiz.save()
+#
+#         for que in quiz_data['questions']:
+#             ques = Question()
+#             ques.question_text = que["question"]
+#             answer_no = que["answer"][-1:]
+#             ques.marks = que["marks"]
+#             ques.quiz = quiz
+#             totalMarks = totalMarks + int(ques.marks)
+#             ques.save()
+#             count = 1
+#             print("-----> :",que["options"])
+#             for opt in que["options"]:
+#                 opts = Option()
+#                 opts.option_text = opt
+#                 opts.question = ques
+#                 if count == answer_no:
+#                     opts.is_correct = True
+#                 count = count + 1
+#                 opts.save()
+#
+#         quiz.total_marks = totalMarks
+#         quiz.save()
+#         return HttpResponse('tutor-view-course-quizzes')  # Redirect to the quiz list page after successful form submission
+#     else:
+#         form = AddQuizForm()
+#
+#     return render(request, 'tutors/add_quiz.html', {'quiz_form': form})
+#
+#
+# def update_quiz(request,quiz_id):
+#     quiz = get_object_or_404(Quiz, pk=26)
+#     # Print all the data from the quiz model
+#     print(f"Quiz Name: {quiz.quiz_name}")
+#     print(f"Total Marks: {quiz.total_marks}")
+#     print(f"Duration: {quiz.duration}")
+#     print("Questions:")
+#
+#     for question in quiz.lstquestion.all():
+#         print(f"  Question: {question.question_text}")
+#         print(f"  Marks: {question.marks}")
+#         print("  Options:")
+#         for option in question.lstoption.all():
+#             print(f"    - {option.option_text}")
+#
+#         print()
+#
+#     if request.method == 'POST':
+#         quiz_form = UpdateQuizForm(request.POST, instance=quiz)
+#         question_formset = QuestionFormSet(request.POST, instance=quiz)
+#         if quiz_form.is_valid() and question_formset.is_valid():
+#             quiz_form.save()
+#             question_formset.save()
+#             # Redirect to the quiz list or some other page after successful form submission
+#     else:
+#         quiz_form = UpdateQuizForm(instance=quiz)
+#         question_formset = QuestionFormSet(instance=quiz)
+#
+#     return render(request, 'tutors/add_quiz.html', {'quiz_form': quiz_form, 'question_formset': question_formset})
 
 # def getAssignment(request, course_id):
     # assignments = Assignment.objects.filter(course_id_id=course_id)
     # AssignmentAnswer.objects.filter(assignment_id=)
 
+
+def assignment_grade(request,course_id):
+    data = {}
+    lstAssignData = []
+    data['lstAssignment'] = lstAssignData
+    assignmentList = Assignment.objects.filter(course_id_id=course_id)
+    print("Assignment Grade",str(len(assignmentList)))
+    for assign in assignmentList:
+        AssignData = {}
+        lstSubData= []
+        AssignData['assign_name'] = assign.name
+        AssignData['lstSubData'] = lstSubData
+
+
+        lstAssignData.append(AssignData)
+        assignment_answer = AssignmentAnswer.objects.filter(assignment_id=assign.id)
+        for sub in assignment_answer:
+            submission_data = {}
+            lstSubData.append(submission_data)
+            data[assign.id] = submission_data
+
+            submission_data['StudentName'] = sub.student.username
+            submission_data['Document'] = sub.document
+            submission_data['TotalMarks'] = sub.assignment.grade
+    print(data)
+    if request.method == "POST":
+        form = addMarksForms(request.POST)
+        if form.is_valid():
+            form1 = form.save(commit=False)
+            form1.save()
+            return HttpResponse("marks given")
+    else:
+        form = addMarksForms()
+    return render(request, "tutors/grade_view.html", {'form': form, 'data':data})
 
 
 

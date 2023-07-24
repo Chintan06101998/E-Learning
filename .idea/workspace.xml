@@ -5,19 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f13e3c6-de84-440e-9a95-2659fe1b8515" name="Changes" comment="Added">
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/quiz.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/assignment_submission.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/assignmentupload.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/add_quiz.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/tutor_quiz.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/update_quiz.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/course_detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/view_assignment.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/students/view_material.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/learningapp/templates/tutors/grade_view.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0002_remove_materialanswer_answers_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0003_alter_materialanswer_material_id_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0004_remove_question_quiz_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0005_results_type_alter_results_id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0006_remove_results_assignment_grade_and_more.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/migrations/0007_alter_results_type.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/students/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/students/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/students/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/learningapp/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/learningapp/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/learningapp/base_student.html" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/learningapp/base_student.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/learningapp/base_tutor.html" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/learningapp/base_tutor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/quiz.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/templates/static/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/static/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/students/assignment_submission.html" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/students/assignment_submission.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learningapp/templates/students/courselist.html" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/templates/students/courselist.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/tutors/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/tutors/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/tutors/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/tutors/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learningapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/learningapp/urls.py" afterDir="false" />
@@ -65,26 +76,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;development&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/chintanpatel/PycharmProjects/djangoProject/learningapp/templates/tutors&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "development",
+    "last_opened_file_path": "/Users/chintanpatel/PycharmProjects/djangoProject",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "vcs.Git",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/learningapp/templates/tutors" />
       <recent name="$PROJECT_DIR$/learningapp/templates" />
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/learningapp/tutors" />
       <recent name="$PROJECT_DIR$/learningapp/students" />
     </key>
@@ -148,7 +159,8 @@
       <workItem from="1689924580956" duration="9275000" />
       <workItem from="1689964784851" duration="13822000" />
       <workItem from="1689984738413" duration="27373000" />
-      <workItem from="1690068509707" duration="13477000" />
+      <workItem from="1690068509707" duration="16396000" />
+      <workItem from="1690125251721" duration="35088000" />
     </task>
     <task id="LOCAL-00001" summary="Added">
       <created>1689884542079</created>
@@ -215,16 +227,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added" />
     <option name="LAST_COMMIT_MESSAGE" value="Added" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/learningapp/tutors/views.py</url>
-          <line>10</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
