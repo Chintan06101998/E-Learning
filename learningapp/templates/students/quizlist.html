@@ -1,0 +1,96 @@
+{% extends 'learningapp/base_student.html' %} {% block content %}
+
+<div style="background: #dcd9ff" class="w-100">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="{% url 'view-course-details' course_details.id  %}"
+              >Details</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="{% url 'view-assignment' course_details.id  %}"
+              >Material</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{% url 'course-assignment' course_details.id  %}"
+              >Assignemnts</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{% url 'tutor-view-course-quizzes' course_details.id  %}"
+              >Quizzes</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<div class="pt-3 p-md-3 p-lg-4" style="height: calc(100vh - 120px)">
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+      <h1 class="app-page-title mb-0">{{course_details.name}} / Quizzes</h1>
+    </div>
+
+    <!--//col-auto-->
+  </div>
+
+  <div class="app-card app-card-orders-table shadow-sm mb-5">
+    <div class="app-card-body">
+      <div class="table-responsive">
+        <table class="table app-table-hover mb-0 text-left">
+          <thead>
+            <tr>
+              <th class="cell">Quiz #</th>
+              <th class="cell">Name</th>
+              <th class="cell">Description</th>
+              <th class="cell">Grades</th>
+
+              <th class="cell">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for quiz in course_quizzes %}
+            <tr>
+              <td class="cell">{{quiz.id}}</td>
+              <td class="cell">{{quiz.name}}</td>
+              <td class="cell w-50">{{quiz.description}}</td>
+              <td class="cell">{{quiz.obtained_marks}}/{{quiz.total_marks}}</td>
+
+              {% if not quiz.taken %}
+              <td class="cell">
+                <a
+                  class="btn-sm app-btn-secondary"
+                  href="{% url 'student-take-quiz' quiz.id %}"
+                  >Take Quiz
+                </a>
+              </td>
+              {% else %}
+              <td class="cell">-</td>
+              {% endif %}
+            </tr>
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!--//table-responsive-->
+    </div>
+    <!--//app-card-body-->
+  </div>
+  <!--//app-card-->
+</div>
+
+{% endblock %}

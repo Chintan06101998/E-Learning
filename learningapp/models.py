@@ -142,6 +142,12 @@ class UQuizSubmissions(models.Model):
     def __str__(self):
         return f"Student ID: {self.student_id}, Question: {self.question.question}"
 
+class UQuizSubmissions2(models.Model):
+    student = models.ForeignKey(Users, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(UQuizQuestions, on_delete=models.CASCADE)
+    obtained_grade = models.PositiveIntegerField(default=0,null=True)
+    def __str__(self):
+        return self.quiz.name
 
 class Result(models.Model):
     TYPE = [

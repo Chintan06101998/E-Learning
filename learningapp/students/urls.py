@@ -9,12 +9,12 @@ urlpatterns = [
     path('courses', views.getEnrolledCourses, name = "student-courses"),
     path('browse-courses', views.getAvailableCourses, name = "student-browse-courses"),
     path('enroll-course/<int:course_id>', views.enrollCourse, name = "student-enroll-course"),
-
+    path('course-quizzes/<int:course_id>',views.view_quizzes, name="student-course-quizzes"),
     path('getallcourses',views.getallcourse),
     path('assignment-submit/<int:assignment_id>', views.assignment_submission, name='assignment-submission'),
     path('course-details/<int:course_id>', views.view_course_details, name='view-course-details'),
     path('course-assignment/<int:course_id>', views.viewCourseAssignments, name='course-assignment'),
     path('view-assignment/<int:course_id>', views.view_materials, name='view-assignment'),
     path('showquiz/<int:quiz_id>',views.show_quiz, name="student-show-quiz"),
-
+   path('take-quiz/<int:quiz_id>',views.take_quiz, name="student-take-quiz"),
 ]

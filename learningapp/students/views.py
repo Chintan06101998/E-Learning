@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from static.forms import addSubmissionForm
-from learningapp.models import Course, Material, Assignment, Users, StudentCourses, AssignmentAnswer, Quiz, Question, Option, Result
+from learningapp.models import Course, Material, Assignment, Users, StudentCourses, AssignmentAnswer, Quiz, Question, Option, Result,UQuiz,UQuizQuestions,UQuizSubmissions
 from learningapp.templates.static.forms import uploadAnswerForm
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from learningapp.utils import is_student
@@ -35,7 +35,17 @@ def get_m(m):
 def home_student(request):
     user = request.session['user']
     student = get_object_or_404(Users,pk=user['id'])
- 
+    submitted_quizzes = UQuizSubmissions.objects.filter(student_id=user['id']).values_list('question__quiz_id', flat=True)
+
+    # Get the IDs of all quizzes
+    all_quiz_ids = UQuiz.objects.values_list('id', flat=True)
+
+    # Calculate the difference to find due quizzes
+    due_quizzes_ids = set(all_quiz_ids).difference(set(submitted_quizzes))
+
+    # Count the number of due quizzes
+    count_due_quizzes = len(due_quizzes_ids)
+
     # Get the count of enrolled courses for the student
     enrolled_courses_count = student.enrolled_courses.count()
     # Get the greeting message based on the current time
@@ -45,7 +55,7 @@ def home_student(request):
     assignments_due_count = Assignment.objects.filter(course_id__students=student, due_date__lte=date.today(), is_submitted=False).count()
     print(user)
     user['membership'] = get_m(student.memberShip)
-    return render(request, './students/home.html',{ 'greeting_message': greeting_message,'user':user,'enrolled_courses':enrolled_courses_count,'assignment_due_counts':assignments_due_count} )
+    return render(request, './students/home.html',{ 'greeting_message': greeting_message,'user':user,'enrolled_courses':enrolled_courses_count,'assignment_due_counts':assignments_due_count,'count_due_quizzes':count_due_quizzes} )
 
 @login_required
 @user_passes_test(is_student)
@@ -172,6 +182,21 @@ def view_materials(request, course_id):
     course_details = Course.objects.get(id=course_id)
     return render(request, "students/view_material.html",{'course_details':course_details,'course_materials':material_details})
 
+def view_quizzes(request, course_id):
+    quiz_details = UQuiz.objects.filter(course_id=course_id)
+    course_details = Course.objects.get(id=course_id)
+    user = request.session['user']
+    i_user = get_object_or_404(Users,pk=user['id'])
+    for quiz in quiz_details:
+          submissions = UQuizSubmissions.objects.filter(student=i_user, question__quiz=quiz)
+          if(len(submissions)):
+             quiz.taken = True
+          else:
+              quiz.taken =False
+          quiz.obtained_marks = sum(submission.obtained_grade for submission in submissions)
+
+    return render(request, "students/quizlist.html",{'course_details':course_details,'course_quizzes':quiz_details})
+
 
 def show_quiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
@@ -241,3 +266,35 @@ def show_quiz(request, quiz_id):
         json_string = json.dumps(oQuiz)
         return render(request, 'students/showquiz.html',
                       {'oQuiz': json_string, 'bAdd': 1, 'quiz_id': quiz_id, 'course_id': course_id})
+    
+
+
+
+def take_quiz(request, quiz_id):
+    quiz = UQuiz.objects.get(pk=quiz_id)
+    questions = UQuizQuestions.objects.filter(quiz=quiz)
+    user = request.session['user']
+    i_user = get_object_or_404(Users,pk=user['id'])
+    if request.method == 'POST':
+        total_obtained_grade = 0
+
+        for question in questions:
+            question_id = str(question.id)
+            submitted_answer = request.POST.get(question_id)
+
+            if submitted_answer == question.correct_option:
+                total_obtained_grade += question.marks
+                UQuizSubmissions.objects.update_or_create(
+                    student=i_user,
+                    question=question,
+                    defaults={'submitted_answer': submitted_answer,
+                              'obtained_grade': question.marks}
+                )
+
+        return HttpResponseRedirect(reverse('student-course-quizzes', args=[quiz.course.id]))
+
+    context = {
+        'quiz': quiz,
+        'questions': questions,
+    }
+    return render(request, 'students/take_quiz.html', context)
