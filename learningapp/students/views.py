@@ -182,6 +182,7 @@ def view_materials(request, course_id):
     course_details = Course.objects.get(id=course_id)
     return render(request, "students/view_material.html",{'course_details':course_details,'course_materials':material_details})
 
+#sbh
 def view_quizzes(request, course_id):
     quiz_details = UQuiz.objects.filter(course_id=course_id)
     course_details = Course.objects.get(id=course_id)
@@ -197,7 +198,7 @@ def view_quizzes(request, course_id):
 
     return render(request, "students/quizlist.html",{'course_details':course_details,'course_quizzes':quiz_details})
 
-
+#sbh
 def show_quiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     course_id = quiz.course_id
@@ -269,7 +270,7 @@ def show_quiz(request, quiz_id):
     
 
 
-
+#sbh
 def take_quiz(request, quiz_id):
     quiz = UQuiz.objects.get(pk=quiz_id)
     questions = UQuizQuestions.objects.filter(quiz=quiz)
@@ -290,6 +291,14 @@ def take_quiz(request, quiz_id):
                     defaults={'submitted_answer': submitted_answer,
                               'obtained_grade': question.marks}
                 )
+            else:
+                total_obtained_grade += 0
+                UQuizSubmissions.objects.update_or_create(
+                    student=i_user,
+                    question=question,
+                    defaults={'submitted_answer': submitted_answer,
+                              'obtained_grade':0}
+                ) 
 
         return HttpResponseRedirect(reverse('student-course-quizzes', args=[quiz.course.id]))
 

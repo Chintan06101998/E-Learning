@@ -7,7 +7,7 @@
         <div class="app-card app-card-stat shadow-sm h-100">
           <div class="app-card-body p-3 p-lg-4">
             <h4 class="stats-type mb-1">Total Courses</h4>
-            <div class="stats-figure">12</div>
+            <div class="stats-figure">{{ total_courses }}</div>
       
           </div>
           <!--//app-card-body-->
@@ -21,7 +21,7 @@
         <div class="app-card app-card-stat shadow-sm h-100">
           <div class="app-card-body p-3 p-lg-4">
             <h4 class="stats-type mb-1">Total Enrolled Students</h4>
-            <div class="stats-figure">2,250</div>
+            <div class="stats-figure">{{ total_enrolled_students }}</div>
         
           </div>
           <!--//app-card-body-->
@@ -35,8 +35,8 @@
       <div class="col-6 col-lg-4">
         <div class="app-card app-card-stat shadow-sm h-100">
           <div class="app-card-body p-3 p-lg-4">
-            <h4 class="stats-type mb-1">Pending Quiz Evaluations</h4>
-            <div class="stats-figure">6</div>
+            <h4 class="stats-type mb-1">Pending Assignment Evaluations</h4>
+            <div class="stats-figure">{{ pending_evaluations }}</div>
      
           </div>
           <!--//app-card-body-->

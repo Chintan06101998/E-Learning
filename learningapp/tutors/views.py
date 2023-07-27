@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from learningapp.models import Course, Material, Assignment, AssignmentAnswer, Option, Question, Quiz, UQuizQuestions, UQuiz, UQuizSubmissions
+from learningapp.models import Course, Material, Assignment, AssignmentAnswer, Option, Question, Quiz, UQuizQuestions, UQuiz, UQuizSubmissions,Users
 from learningapp.templates.static.forms import CreateCourseForm, UpdateCourseForm, addMaterialForm, \
     addAssignmentForm, addMarksForms, UpdateSubmissionGradesForm, AddQuizForm
 
@@ -91,7 +91,19 @@ def deleteCourse(request, course_id):
 @user_passes_test(is_tutor)
 def home_tutor(request):
     user = request.session['user']
-    return render(request, 'tutors/home.html', {'user': user})
+    total_courses = Course.objects.filter(tutor_id=user['id']).count()
+   # Step 1: Get courses where the user is the tutor
+    tutor_courses = Course.objects.filter(tutor_id=user['id'])
+
+    # Step 2: Get assignments in those courses
+    assignments = Assignment.objects.filter(course_id__in=tutor_courses)
+
+    # Step 3: Get assignment answers for the obtained assignments where the evaluation is pending
+    pending_evaluations = AssignmentAnswer.objects.filter(assignment__in=assignments, is_submitted=True, obtained_grade__isnull=True).count()
+
+    total_enrolled_students = Users.objects.filter(enrolled_courses__tutor_id=user['id']).count()
+
+    return render(request, 'tutors/home.html', {'user': user, 'total_courses':total_courses,'pending_evaluations':pending_evaluations,'total_enrolled_students':total_enrolled_students})
 
 
 @login_required
