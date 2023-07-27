@@ -61,7 +61,7 @@
 </head>
 <body>
   <h1>Create Quiz</h1>
-  <form method="post" action="{% url 'tutor_add_quiz' %}">
+  <form method="post" action="{% url 'tutor-add-course-quiz' course_id %}">
     {% csrf_token %}
     {{ quiz_form.as_p }}
     <div id="questions-container">

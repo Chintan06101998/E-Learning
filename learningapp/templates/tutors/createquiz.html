@@ -1,0 +1,75 @@
+
+{% extends 'learningapp/base_tutor.html' %}
+
+{% block content %}
+  <h1>Create a New Quiz</h1>
+  <form method="post">
+    {% csrf_token %}
+    <label for="quiz_name">Quiz Name:</label>
+    <input type="text" name="quiz_name" id="quiz_name" required>
+    <br>
+    <label for="quiz_description">Quiz Description:</label>
+    <textarea name="quiz_description" id="quiz_description" required></textarea>
+    <br>
+    <label for="num_questions">Number of Questions:</label>
+    <input type="number" name="num_questions" id="num_questions" required>
+    <br>
+
+    <div id="questions-container">
+      <!-- Questions and Options will be dynamically added here -->
+    </div>
+    
+    <button type="submit">Create Quiz</button>
+  </form>
+
+  <script>
+    // JavaScript code to handle dynamic form generation based on num_questions
+    const questionsContainer = document.getElementById('questions-container');
+    const numQuestionsInput = document.getElementById('num_questions');
+    const options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+
+    numQuestionsInput.addEventListener('input', () => {
+      const numQuestions = parseInt(numQuestionsInput.value);
+      questionsContainer.innerHTML = '';
+
+      for (let i = 1; i <= numQuestions; i++) {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+
+        questionDiv.innerHTML = `
+          <h2>Question ${i}</h2>
+          <label for="question_${i}">Question:</label>
+          <textarea name="question_${i}" id="question_${i}" required></textarea>
+          <br>
+        `;
+
+        // Add options for the question
+        for (let j = 1; j <= options.length; j++) {
+          questionDiv.innerHTML += `
+            <label for="option${j}_${i}">${options[j-1]}:</label>
+            <input type="text" name="option${j}_${i}" id="option${j}_${i}" required>
+            <br>
+          `;
+        }
+
+        // Add the correct option select
+        questionDiv.innerHTML += `
+          <label for="correct_option_${i}">Correct Option:</label>
+          <select name="correct_option_${i}" id="correct_option_${i}" required>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+          </select>
+          <br>
+        `;
+        questionDiv.innerHTML += `
+        <label for="marks_${i}">Marks:</label>
+        <input type="number" name="marks_${i}" id="marks_${i}" required>
+        <br>
+      `;
+        questionsContainer.appendChild(questionDiv);
+      }
+    });
+  </script>
+{% endblock %}

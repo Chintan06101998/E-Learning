@@ -75,11 +75,72 @@ class AssignmentAnswer(models.Model):
     document = models.FileField(upload_to='static/course_materials/documents')
     submission_date = models.DateTimeField(auto_now_add=True)
     is_submitted = models.BooleanField(default=False)
+    obtained_grade = models.PositiveIntegerField(default=0,null=True)
 
     def __str__(self):
         return self.assignment.name
 
 
+class Quiz(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    quiz_name = models.CharField(max_length=100, default = 'New Quiz')
+    total_marks = models.PositiveIntegerField()
+    duration = models.DurationField(default=datetime.timedelta(minutes=10))
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question_text = models.TextField()
+    marks = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.question_text
+
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    option_text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.option_text
+    
+
+class UQuiz(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    total_marks = models.PositiveIntegerField(default=0)
+    def __str__(self):
+        return self.name
+
+class UQuizQuestions(models.Model):
+    quiz = models.ForeignKey(UQuiz, on_delete=models.CASCADE)
+    question = models.TextField()
+    option1 = models.CharField(max_length=255)
+    option2 = models.CharField(max_length=255)
+    option3 = models.CharField(max_length=255)
+    option4 = models.CharField(max_length=255)
+    correct_option = models.CharField(max_length=1, choices=(
+        ('1', 'Option 1'),
+        ('2', 'Option 2'),
+        ('3', 'Option 3'),
+        ('4', 'Option 4'),
+    ))
+    marks = models.PositiveIntegerField()
+    def __str__(self):
+        return f"{self.quiz.name} - {self.question}"
+
+class UQuizSubmissions(models.Model):
+    student = models.ForeignKey(Users, on_delete=models.CASCADE)
+    question = models.ForeignKey(UQuizQuestions, on_delete=models.CASCADE)
+    submitted_answer = models.CharField(max_length=1, choices=(
+        ('1', 'Option 1'),
+        ('2', 'Option 2'),
+        ('3', 'Option 3'),
+        ('4', 'Option 4'),
+    ))
+    obtained_grade = models.PositiveIntegerField(default=0,null=True)
+    def __str__(self):
+        return f"Student ID: {self.student_id}, Question: {self.question.question}"
 
 
 class Result(models.Model):

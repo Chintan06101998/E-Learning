@@ -48,6 +48,8 @@
         <div
           class="row g-2 justify-content-start justify-content-md-end align-items-center"
         >
+        <div class="col-auto">
+        </div>
           <div class="col-auto">
             <a
               class="btn app-btn-secondary"
@@ -85,6 +87,12 @@
               <td class="cell truncate">{{assignment.description}}</td>
               <td class="cell">{{assignment.grade}}</td>
               <td class="cell">
+                <a
+                class="btn-sm app-btn-secondary"
+                style="margin-left: 4px"
+                href="{% url 'tutor-evaluate-course-assignment' assignment.id %}"
+                >Evaluate</a
+                >
                 <a
                   class="btn-sm app-btn-secondary"
                   href="http://127.0.0.1:8000/{{ assignment.document }}"

@@ -17,11 +17,11 @@ urlpatterns = [
     path('create-course-assignment/<int:course_id>/', views.addAssignment,name='tutor-add-course-assignment'),
     path('edit-course-assignment/<int:assignment_id>', views.updateAssignment,name='tutor-edit-course-assignment'),
     path('delete-course-assignment/<int:assignment_id>', views.deleteAssignment,name='tutor-delete-course-assignment'),
+    path('evaluate-course-assignment/<int:assignment_id>', views.assignment_submissions,name='tutor-evaluate-course-assignment'),
     path('home', views.home_tutor, name = "tutor-home"),
     path('courses/', views.getcourse, name = "tutor-courses"),
     path('addmarks/', views.addMarks),
-    path('assignment-grade/<int:course_id>', views.assignment_grade, name='assignment-grade'),
-    # path('createquiz/', views.add_quiz, name="tutor_add_quiz"),
-    # path('update/<int:quiz_id>', views.update_quiz, name="update")
-
+    path('addquiz/<int:course_id>', views.create_quiz, name="tutor-add-course-quiz"),
+    path('update-quiz/<int:quiz_id>', views.update_quiz, name="tutor-update-course-quiz"),
+    path('delete-quiz/<int:quiz_id>', views.delete_quiz, name="tutor-delete-course-quiz"),
 ]

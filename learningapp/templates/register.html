@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <div class="form-group  mb-3">
+            <div class="form-group  mb-3" id="membership_field">
                 <label for="id_memberShip" class="d-block">Membership</label>
                 <select class="form-control w-100" name="memberShip" id="id_memberShip">
                     <option value="F" selected>Free</option>
@@ -55,4 +55,21 @@
         </form>
     </div>
 </div>
+<script>
+    // Add event listener to the user type dropdown
+    document.getElementById('id_user_type').addEventListener('change', function () {
+        // Get the selected value
+        var userType = this.value;
+        console.log('erer')
+        // Get the membership field
+        var membershipField = document.getElementById('membership_field');
+
+        // Show or hide the membership field based on the selected user type
+        if (userType === '1') { // Professor
+            membershipField.style.display = 'none'; // Hide the field
+        } else {
+            membershipField.style.display = 'block'; // Show the field
+        }
+    });
+</script>
 {% endblock %}

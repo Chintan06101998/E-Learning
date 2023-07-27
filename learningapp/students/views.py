@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from static.forms import addSubmissionForm
-from learningapp.models import Course, Material, Assignment, Users, StudentCourses, AssignmentAnswer
+from learningapp.models import Course, Material, Assignment, Users, StudentCourses, AssignmentAnswer, Quiz, Question, Option, Result
 from learningapp.templates.static.forms import uploadAnswerForm
 from django.contrib.auth.decorators import login_required,  user_passes_test
 from learningapp.utils import is_student
@@ -8,6 +8,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 from datetime import date,datetime
 
+import json
 
 def get_greeting_message(current_hour):
     if 5 <= current_hour < 12:
@@ -170,3 +171,73 @@ def view_materials(request, course_id):
     material_details = Material.objects.filter(course_id_id=course_id)
     course_details = Course.objects.get(id=course_id)
     return render(request, "students/view_material.html",{'course_details':course_details,'course_materials':material_details})
+
+
+def show_quiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    course_id = quiz.course_id
+    obtain_marks = 0
+    if request.method == 'POST':
+        dictAnswer = request.POST['answer']
+        questions = Question.objects.filter(quiz = quiz)
+        for question in questions:
+            question_id = question.id
+            question_marks = question.marks
+            answer = Option.objects.filter(question = question, is_correct=True)
+
+            if dictAnswer[question_id] == answer:
+                obtain_marks += question_marks
+        result = Result()
+        result.type = "quiz"
+        usr = request.session['user']
+        result.user = get_object_or_404(Users,pk=usr['id'])
+        result.related_id = quiz_id
+        result.grade = obtain_marks
+        result.total_grade = quiz.total_marks
+        result.save()
+
+    else:
+        oQuiz = {}
+        # Print all the data from the quiz model
+        oQuiz["quiz_name"] = quiz.quiz_name
+        oQuiz["total_marks"] = quiz.total_marks
+
+        duration_timedelta = quiz.duration
+        hours = duration_timedelta.seconds // 3600
+        minutes = (duration_timedelta.seconds // 60) % 60
+        seconds = duration_timedelta.seconds % 60
+
+        # Convert the extracted values to a string in the "HH:MM:SS" format
+        duration_str = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+        oQuiz["duration"] = duration_str
+        lstQuestion = []
+        oQuiz["lstQuestion"] = lstQuestion
+
+        print(f"Total Marks: {quiz.total_marks}")
+        print(f"Duration: {quiz.duration}")
+        print("Questions:")
+
+        for question in Question.objects.filter(quiz=quiz):
+            oQuestion = {}
+            oQuestion["question_text"] = question.question_text
+            oQuestion["marks"] = question.marks
+            lstOptions = []
+            oQuestion["lstOptions"] = lstOptions
+
+            print(f"  Question: {question.question_text}")
+            print(f"  Marks: {question.marks}")
+            print("  Options:")
+
+            for option in Option.objects.filter(question=question):
+                oOption = {}
+                oOption["option_text"] = option.option_text
+                oOption["is_correct"] = option.is_correct
+                lstOptions.append(oOption)
+                print(f"   option - {option.option_text}")
+
+            lstQuestion.append(oQuestion)
+
+        json_string = json.dumps(oQuiz)
+        return render(request, 'students/showquiz.html',
+                      {'oQuiz': json_string, 'bAdd': 1, 'quiz_id': quiz_id, 'course_id': course_id})

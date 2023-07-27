@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
 
-from learningapp.models import Course, Users, Material, Assignment, Result, AssignmentAnswer, Result
+from learningapp.models import Course, Users, Material, Assignment, Result, AssignmentAnswer, Result, Quiz, \
+Question
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -68,6 +69,13 @@ class addMarksForms(forms.ModelForm):
         #         attrs={'type': 'time', 'placeholder': 'HH:MM:SS', 'class': 'form-control'}
         #     )
 
+class UpdateSubmissionGradesForm(forms.Form):
+    def __init__(self, submissions, *args, **kwargs):
+        super(UpdateSubmissionGradesForm, self).__init__(*args, **kwargs)
+        for submission in submissions:
+            field_name = f"marks_{submission.student.id}"
+            self.fields[field_name] = forms.IntegerField(min_value=0, initial=submission.obtained_grade, required=False)
+
 
 class uploadAnswerForm(forms.ModelForm):
     class Meta:
@@ -78,25 +86,24 @@ class GradeForm(forms.ModelForm):
     class Meta:
         model = Result
         fields = "__all__"
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['question_text','marks']
+    
+    
+QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
+    
+class AddQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']
 
-# class QuestionForm(forms.ModelForm):
-#     class Meta:
-#         model = Question
-#         fields = ['question_text','marks']
-#
-#
-# QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
-#
-# class AddQuizForm(forms.ModelForm):
-#     class Meta:
-#         model = Quiz
-#         fields = ['quiz_name', 'duration']
-#
-#
-#
-# class UpdateQuizForm(forms.ModelForm):
-#     class Meta:
-#         model = Quiz
-#         fields = ['quiz_name', 'duration']
+
+
+class UpdateQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']
 
 

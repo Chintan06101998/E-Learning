@@ -1,19 +1,24 @@
 {% extends 'learningapp/base_tutor.html' %} {% block content %}
 <div class="container-xl  pt-3 p-md-3 p-lg-4">
+  <form method="post">
+    {% csrf_token %}
 <div style="height: calc(100vh - 120px)">
   <div class="app-content pt-3 p-md-3 p-lg-4">
     <div class="container-xl">
+  
       <div class="row g-3 mb-4 align-items-center justify-content-between">
         <div class="col-auto">
-          <h1 class="app-page-title mb-0">Assignment-Grades</h1>
+          <h1 class="app-page-title mb-0">Submissions</h1>
         </div>
         <div class="col-auto">
           <div class="page-utilities">
             <div
               class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          
               <div class="col-auto">
-                <a class="btn app-btn-secondary" href="{% url 'tutor-add-course' %}"> Submit Marks </a>
+                {% if assignment_submissions %} <button class="btn app-btn-secondary" type="submit"> Update Grades </button>    {% endif %}
               </div>
+           
             </div>
             <!--//row-->
           </div>
@@ -36,35 +41,36 @@
                 <table class="table app-table-hover mb-0 text-left">
                   <thead>
                     <tr>
-                        <th class="cell">Assignment Name</th>
+                        <th class="cell">Submission #</th>
+                        <th class="cell">Submission date</th>
                         <th class="cell">Student Name</th>
-                        <th class="cell">Total Marks</th>
-                        <th class="cell">Document</th>
-                        <th class="cell">Marks</th>
+                        <th class="cell">Submission</th>
+                        <th class="cell">Grades</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
-                  {% for assignment in data.lstAssignment %}
-                    {%  for student in assignment.lstSubData %}
+                    {%  for submission in assignment_submissions %}
                         <tr>
-                            <td class="cell">{{assignment.assign_name}}</td>
-                            <td class="cell">{{student.StudentName}}</td>
-                            <td class="cell">{{student.TotalMarks}}</td>
+                            <td class="cell">{{submission.id}}</td>
+                            <td class="cell">{{submission.submission_date}}</td>
+                            <td class="cell">{{submission.student.username}}</td>
                             <td class="cell">
-                        <a class="btn-sm app-btn-secondary" href="http://127.0.0.1:8000/{{ material.document }}" download="">Download</a>
+                        <a class="btn-sm app-btn-secondary" href="http://127.0.0.1:8000/{{ submission.document }}" download="">Download</a>
                       </td>
                          <td class="cell">     <div style="display: flex; align-items: center;">
                 <input
                     type="number"
-                    name="marks_{{ student.StudentName }}"
-                    value="0"
+                    name="marks_{{ submission.student.id }}"
+                    id="marks_{{ submission.student.id }}"
+                    value="{{ submission.obtained_grade }}"
+              
                     style="width: 60px; text-align: center;"
-        >
-        <p style="margin: 0 5px;">/{{ student.TotalMarks }}</p>
-    </div></td>
+       / >
+        <p style="margin: 0 5px;">/{{ submission.assignment.grade }}</p>
+    </td>
                         </tr>
                     {% endfor %}
-                  {% endfor %}a
                 </table>
               </div>
               <!--//table-responsive-->
@@ -78,6 +84,7 @@
       <!--//tab-content-->
     </div>
     <!--//container-fluid-->
+  </form>
   </div>
   <!--//app-content-->
 </div>
