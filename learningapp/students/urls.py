@@ -1,5 +1,4 @@
 
-from django.contrib import admin
 from django.urls import path
 from . import views
 
@@ -9,7 +8,7 @@ urlpatterns = [
     path('courses', views.getEnrolledCourses, name = "student-courses"),
     path('browse-courses', views.getAvailableCourses, name = "student-browse-courses"),
     path('enroll-course/<int:course_id>', views.enrollCourse, name = "student-enroll-course"),
-
+    path('showquiz/<int:quiz_id>',views.show_quiz, name="student-show-quiz"),
     path('getallcourses',views.getallcourse),
     path('assignment-submit/<int:assignment_id>', views.assignment_submission, name='assignment-submission'),
     path('course-details/<int:course_id>', views.view_course_details, name='view-course-details'),

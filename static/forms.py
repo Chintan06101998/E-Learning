@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-from learningapp.models import Course, Users, Material, Assignment, AssignmentAnswer, Result
+from learningapp.models import Course, Users, ClassMaterial, Assignment, AssignmentAnswer, Result
 
 class addSubmissionForm(forms.ModelForm):
     class Meta:
@@ -41,7 +41,7 @@ class UpdateCourseForm(forms.ModelForm):
 
 class addMaterialForm(forms.ModelForm):
     class Meta:
-        model = Material
+        model = ClassMaterial
         fields = '__all__'
 
 class addAssignmentForm(forms.ModelForm):

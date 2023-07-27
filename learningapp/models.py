@@ -39,7 +39,7 @@ class Course(models.Model):
         return self.name
 
 
-class Material(models.Model):
+class ClassMaterial(models.Model):
     id = models.AutoField(primary_key=True)
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='materials')
     name = models.CharField(max_length=255)
@@ -79,8 +79,27 @@ class AssignmentAnswer(models.Model):
     def __str__(self):
         return self.assignment.name
 
+class Quiz(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    quiz_name = models.CharField(max_length=100, default = 'New Quiz')
+    total_marks = models.PositiveIntegerField()
+    duration = models.DurationField(default=datetime.timedelta(minutes=10))
 
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question_text = models.TextField()
+    marks = models.PositiveIntegerField()
 
+    def __str__(self):
+        return self.question_text
+
+class Option(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    option_text = models.CharField(max_length=200)
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.option_text
 
 class Result(models.Model):
     TYPE = [
@@ -106,7 +125,7 @@ class Subscription(models.Model):
 
 class Grade(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    course_material = models.ForeignKey(Material, on_delete=models.CASCADE)
+    course_material = models.ForeignKey(ClassMaterial, on_delete=models.CASCADE)
     grade = models.DecimalField(max_digits=5, decimal_places=2)
 
 

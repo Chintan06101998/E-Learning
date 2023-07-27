@@ -17,14 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('',  views.login_view),
-    path('register/',  views.register, name="register"),
-    path('login/',  views.login_view ,name="login"),
-    path('getmaterial/<int:course_id>', views.getmaterial),
-    path('tutors/',include('learningapp.tutors.urls')),
-    path('students/',include('learningapp.students.urls')),
-    path('logout/',views.logout_view,name='logout'),
-    path('grade_view/',views.grade_view,name='Grade View')
+    path('', views.logIn),
+    path('register/', views.registration, name="register"),
+    path('login/', views.logIn, name="login"),
+    path('getmaterial/<int:course_id>', views.getClassMaterials),
+    path('tutors/', include('learningapp.tutors.urls')),
+    path('students/', include('learningapp.students.urls')),
+    path('logout/', views.Logout, name='logout'),
+    path('grade_view/', views.grade, name='Grade View'),
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]

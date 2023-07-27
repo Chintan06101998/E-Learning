@@ -1,20 +1,19 @@
-from django.contrib.auth import login, logout
-from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from random import random
+
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from learningapp.models import Material, Users, Assignment, AssignmentAnswer
-from learningapp.models import Material, Users
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from learningapp.models import  AssignmentAnswer
+from django.contrib.auth import  login
 from django.http import HttpResponse
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 
-from learningapp.models import Course, Material
-from learningapp.templates.static.forms import UserRegistrationForm, LoginForm, GradeForm
-from .models import Users  # Import your custom User model
+from learningapp.models import Course, ClassMaterial
+from learningapp.templates.static.forms import UserRegistrationForm, UserLoginForm, GradeForm
+from .models import Users
+from django.core.mail import send_mail
 
-
-def register(request):
+def registration(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         print("form--->>", str(form))
@@ -26,13 +25,13 @@ def register(request):
             return HttpResponse("Error")
     else:
         form = UserRegistrationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration.html', {'form': form})
 
 
 
-def login_view(request):
+def logIn(request):
     if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
+        form = UserLoginForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -54,7 +53,7 @@ def login_view(request):
                     memberShip = user.memberShip
                     if int(user_type) == 0:
                         # render student view
-                        form = LoginForm()
+                        form = UserLoginForm()
                         response = HttpResponseRedirect(reverse("student-home"))
                         return response
                     else:
@@ -71,7 +70,7 @@ def login_view(request):
                 print(user)
                 if int(user['usertype']) == 0:
                     # render student view
-                    form = LoginForm()
+                    form = UserLoginForm()
                     response = HttpResponseRedirect(reverse("student-home"))
                     return response
                 else:
@@ -79,24 +78,54 @@ def login_view(request):
                     return HttpResponseRedirect(reverse('tutor-home'))
                   
             else:
-                 form = LoginForm()
+                 form = UserLoginForm()
         else:
-            form = LoginForm()
+            form = UserLoginForm()
 
     return render(request, 'login.html', {'form': form})
 
+# def forgotPassword(request):
+#     if request.method == 'POST':
+#         email = request.POST['email']
+#         user = get_object_or_404(Users, email = email)
+#         if user:
+#
+#             otp = random.randrange(100000, 999999)
+#             send_email(otp, user.email)
+#             HttpResponse("Email sent successfully!")
+#
+#         print("form--->>", str(form))
+#         if form.is_valid():
+#             form.save()
+#             # Redirect to a success page or perform other actions
+#             return HttpResponseRedirect(reverse('login'))
+#         else:
+#             return HttpResponse("Error")
+#     else:
+#         form = UserRegistrationForm()
+#     return render(request, 'registration.html', {'form': form})
 
-def getmaterial(request, course_id):
-    material = Material.objects.filter(course_id=course_id)
+def send_email(otp,recipient_email):
+    subject = 'Reset Password OTP'
+    message = 'This is a OTP ' + otp + ' to reset password on Enlight Learn'
+    from_email = 'chintan090298@gmail.com'  # Replace with your email address
+    recipient_list = [recipient_email]  # Replace with the recipient's email address
+
+    send_mail(subject, message, from_email, recipient_list)
+    return
+
+
+def getClassMaterials(request, course_id):
+    material = ClassMaterial.objects.filter(course_id=course_id)
     return render(request, 'getcourses.html', {'material':material})
 
-
-def logout_view(request):
+@login_required
+def Logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
 
 
-def grade_view(request,course_id,assignment_id):
+def grade(request, course_id, assignment_id):
     course = Course.objects.get(pk=1)
     assignmentAnswer = AssignmentAnswer.objects.filter(course=course)
 
@@ -110,3 +139,5 @@ def grade_view(request,course_id,assignment_id):
         form = GradeForm()
 
         return render(request, 'tutors/grade.html', {'form':form})
+
+

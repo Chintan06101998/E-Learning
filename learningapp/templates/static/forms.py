@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.forms import ModelForm
 
-from learningapp.models import Course, Users, Material, Assignment, Result, AssignmentAnswer, Result
+from learningapp.models import Course, Users, ClassMaterial, Assignment, Result, AssignmentAnswer, Result, Quiz, \
+    Question
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -21,7 +22,7 @@ class UserRegistrationForm(UserCreationForm):
         # Add any additional form customization or validation here
 
 
-class LoginForm(AuthenticationForm):
+class UserLoginForm(AuthenticationForm):
     class Meta:
         model = Users
         fields = ['username', 'password']
@@ -39,7 +40,7 @@ class UpdateCourseForm(forms.ModelForm):
 
 class addMaterialForm(forms.ModelForm):
     class Meta:
-        model = Material
+        model = ClassMaterial
         fields =['name','description','document']
 
 class addAssignmentForm(forms.ModelForm):
@@ -79,24 +80,22 @@ class GradeForm(forms.ModelForm):
         model = Result
         fields = "__all__"
 
-# class QuestionForm(forms.ModelForm):
-#     class Meta:
-#         model = Question
-#         fields = ['question_text','marks']
-#
-#
-# QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
-#
-# class AddQuizForm(forms.ModelForm):
-#     class Meta:
-#         model = Quiz
-#         fields = ['quiz_name', 'duration']
-#
-#
-#
-# class UpdateQuizForm(forms.ModelForm):
-#     class Meta:
-#         model = Quiz
-#         fields = ['quiz_name', 'duration']
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ['question_text','marks']
 
 
+QuestionFormSet = inlineformset_factory(Quiz, Question, form=QuestionForm, extra=1)
+
+class AddQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']
+
+
+
+class UpdateQuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_name', 'duration']

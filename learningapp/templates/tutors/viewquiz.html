@@ -1,0 +1,188 @@
+{% extends 'learningapp/base_tutor.html' %}
+{% block title %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb m-1">
+    <li class="breadcrumb-item fw-bold">
+      <a href="{% url 'tutor-courses' %}">Course</a>
+    </li>
+    <li class="breadcrumb-item fw-bold active" aria-current="page">Quiz</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block content %}
+<div style="background: #c4d8f6" class="w-100">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="{% url 'tutor-view-course' course_details.id  %}"
+              >Details</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="{% url 'tutor-view-course-material' course_details.id  %}"
+              >Material</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{% url 'tutor-view-course-assignments' course_details.id  %}"
+              >Assignemnts</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{% url 'tutor-view-course-quizzes' course_details.id  %}"
+              >Quizzes</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div> <br/>
+<!-- app-card Header - Dropdown -->
+<div class="container">
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+      <h1 class="app-page-title mb-0">{{ course_details.name }} / Quiz </h1>
+    </div>
+    <!--//col-auto-->
+  </div>
+<div
+class="row g-2 justify-content-start justify-content-md-end align-items-center"
+>
+<div class="col-auto">
+  <a
+    class="btn app-btn-secondary"
+    href="{% url 'tutor_add_quiz' course_details.id %}"
+{#    data-toggle="modal"#}
+{#    data-target="#addQuizModal"#}
+  >
+    Add Quiz
+  </a>
+</div>
+</div>
+
+<!-- Add Assignment Modal -->
+<div class="modal fade" id="addQuizModal" tabindex="-1" role="dialog" aria-labelledby="addQuizModal" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="addQuizModal">Create Assignment</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+  </div>
+</div>
+</div>
+</div>
+
+<div class="pt-3 p-md-3 p-lg-4" style="height: calc(100vh - 120px)">
+<!--//app-card-->
+<div class="row">
+{% for quiz in course_quizzes %}
+<div class="col-md-4">
+<div class="app-card shadow mb-4" style="margin: 16px">
+  <div
+    class="app-card-header py-3 d-flex flex-row align-items-center justify-content-between"
+    style="padding: 16px"
+  >
+    <!-- NOTE: Add assignment URL if needed -->
+    <h6 class="m-0 font-weight-bold text-primary">{{quiz.quiz_name}}</h6>
+    <div class="dropdown no-arrow">
+      <a
+        class="dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <!-- <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i> -->
+      </a>
+
+      <div
+        class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+        aria-labelledby="dropdownMenuLink"
+      >
+
+        <a
+          class="dropdown-item"
+          href="{% url 'tutor_update_quiz' quiz.id %}"
+          >Edit</a
+        >
+        <a
+          class="dropdown-item"
+          data-toggle="modal"
+          href="#myModal{{ quiz.id }}"
+          >Delete</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="card-body" style="padding: 16px">
+    Duration: {{ quiz.duration }} <br />
+    Total marks: {{ quiz.total_marks }}
+  </div>
+</div>
+</div>
+<!-- HTML to DELETE the assignment -->
+<div id="myModal{{ quiz.id }}" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="icon-box">
+        <i class="material-icons">&#xE5CD;</i>
+      </div>
+      <h4 class="modal-title">Are you sure?</h4>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-hidden="true"
+      >
+        &times;
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>
+        Do you really want to delete the {{ quiz.quiz_name }} quiz?
+        This process cannot be undone.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" data-dismiss="modal">
+        Cancel
+      </button>
+      <form
+        method="post"
+        action="{% url 'tutor-delete-quiz' quiz.id %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+</div>
+
+{% endblock %}
+
