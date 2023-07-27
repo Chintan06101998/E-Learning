@@ -26,5 +26,8 @@ urlpatterns = [
     path('tutors/',include('learningapp.tutors.urls')),
     path('students/',include('learningapp.students.urls')),
     path('logout/',views.logout_view,name='logout'),
+    path('checkout/<str:selected_membership>/<int:user_id>/', views.checkout, name='checkout'),
+    path('rs/<str:selected_membership>/<int:user_id>', views.registration_success, name='rs'),
+    path('cp/<int:user_id>', views.cancel_plan, name='cancel-plan'),
     path('grade_view/',views.grade_view,name='Grade View')
 ]

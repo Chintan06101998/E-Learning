@@ -6,12 +6,45 @@ from django.contrib.auth.decorators import login_required,  user_passes_test
 from learningapp.utils import is_student
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
+from datetime import date,datetime
+
+
+def get_greeting_message(current_hour):
+    if 5 <= current_hour < 12:
+        return 'Good Morning!'
+    elif 12 <= current_hour < 17:
+        return 'Good Afternoon!'
+    else:
+        return 'Good Evening!'
+
+def get_m(m):
+    print(m)
+    if m=="S":
+        return 'EnlightLearn Silver Plan'
+    elif m=="P":
+        return 'EnlightLearn Platinum Plan'
+    elif m=="G":
+        return 'EnlightLearn Gold Plan'
+    else:
+        return 'EnlightLearn Free Plan'
+
 
 @login_required
 @user_passes_test(is_student)
 def home_student(request):
     user = request.session['user']
-    return render(request, './students/home.html',{'user':user} )
+    student = get_object_or_404(Users,pk=user['id'])
+ 
+    # Get the count of enrolled courses for the student
+    enrolled_courses_count = student.enrolled_courses.count()
+    # Get the greeting message based on the current time
+    current_hour = datetime.now().hour
+    greeting_message = get_greeting_message(current_hour)
+    # Get the count of assignments that are due but not submitted for the student
+    assignments_due_count = Assignment.objects.filter(course_id__students=student, due_date__lte=date.today(), is_submitted=False).count()
+    print(user)
+    user['membership'] = get_m(student.memberShip)
+    return render(request, './students/home.html',{ 'greeting_message': greeting_message,'user':user,'enrolled_courses':enrolled_courses_count,'assignment_due_counts':assignments_due_count} )
 
 @login_required
 @user_passes_test(is_student)
@@ -122,7 +155,7 @@ def enrollCourse(request,course_id):
     if not is_enrolled:
         print(i_user.memberShip)
         total_enrolled_courses = len(StudentCourses.objects.filter(user=i_user))
-        if((i_user.memberShip =='F' and total_enrolled_courses ==0 ) or  (i_user.memberShip =='S' and total_enrolled_courses ==3) or (i_user.memberShip =='G' and total_enrolled_courses ==5 ) or (i_user.memberShip =='P')):
+        if((i_user.memberShip =='F' and total_enrolled_courses ==0 ) or  (i_user.memberShip =='S' and total_enrolled_courses <=3) or (i_user.memberShip =='G' and total_enrolled_courses <=5 ) or (i_user.memberShip =='P')):
             StudentCourses.objects.create(user=i_user, course=course)
             course.students.add(i_user)
             course.save()

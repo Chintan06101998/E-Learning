@@ -12,21 +12,81 @@ from django.shortcuts import render, HttpResponseRedirect
 from learningapp.models import Course, Material
 from learningapp.templates.static.forms import UserRegistrationForm, LoginForm, GradeForm
 from .models import Users  # Import your custom User model
+import stripe
+from django.conf import settings
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         print("form--->>", str(form))
         if form.is_valid():
-            form.save()
-            # Redirect to a success page or perform other actions
-            return HttpResponseRedirect(reverse('login'))
+            selected_membership = form.cleaned_data['memberShip']
+            form.cleaned_data['memberShip'] = 'F'            
+            user  = form.save()
+            user_id = user.id  # Get the ID of the user
+            if selected_membership != 'F':
+                return HttpResponseRedirect(reverse('checkout',args=[selected_membership,user_id]))
+            else:
+                # If free membership, create the user and complete the registration  
+                return HttpResponseRedirect(reverse('login'))
         else:
             return HttpResponse("Error")
     else:
         form = UserRegistrationForm()
     return render(request, 'register.html', {'form': form})
+
+
+def checkout(request,selected_membership,user_id):
+    if selected_membership == 'P':
+        # You can add more plans and their respective Stripe plan IDs here
+        stripe_plan_id = 'price_1NXFSzHNGyeJCpDlr4hbObs9'
+    elif  selected_membership == 'G':
+        # You can add more plans and their respective Stripe plan IDs here
+        stripe_plan_id = 'price_1NXFRnHNGyeJCpDlX0FMNmwL'
+    elif  selected_membership == 'S':
+        # You can add more plans and their respective Stripe plan IDs here
+        stripe_plan_id = 'price_1NXFQZHNGyeJCpDlHjAqEOfV' 
+
+
+    # Create a Stripe Checkout Session
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'price': stripe_plan_id,
+            'quantity': 1,
+        }],
+        mode='payment',  # Use 'payment' for one-time payments
+        success_url=request.build_absolute_uri(reverse('rs',args=[selected_membership,user_id])),
+    )
+
+    return HttpResponseRedirect(session.url)
+
+
+def registration_success(request,selected_membership,user_id):
+    
+    print(selected_membership)
+    print(user_id)
+
+
+    user = get_object_or_404(Users, id=user_id)
+    user.memberShip = selected_membership  # Assuming the membership field is called 'memberShip'
+    user.save()
+    # Redirect to a success page or perform other actions
+    return HttpResponseRedirect(reverse('login'))
+
+
+def cancel_plan(request,user_id):
+    user = get_object_or_404(Users, id=user_id)
+    user.memberShip = 'F'  # Assuming the membership field is called 'memberShip'
+    user.save()
+    # Redirect to a success page or perform other actions
+    return HttpResponseRedirect(reverse('login'))
+
+def registration_cancel(request):
+    # Handle the canceled payment and notify the user
+    return HttpResponse("Payment canceled.")
 
 
 

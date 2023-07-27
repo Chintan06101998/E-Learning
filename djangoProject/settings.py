@@ -30,6 +30,10 @@ ALLOWED_HOSTS = []
 LOGIN_URL = '/login/'
 
 # Application definition
+# settings.py
+
+STRIPE_PUBLISHABLE_KEY = ''
+STRIPE_SECRET_KEY = ''
 
 INSTALLED_APPS = [
     'django.contrib.admin',
