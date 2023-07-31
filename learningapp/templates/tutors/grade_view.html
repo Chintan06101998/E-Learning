@@ -61,8 +61,8 @@
                          <td class="cell">     <div style="display: flex; align-items: center;">
                 <input
                     type="number"
-                    name="marks_{{ submission.student.id }}"
-                    id="marks_{{ submission.student.id }}"
+                    name="marks_{{ submission.student.id }}_{{ submission.id }}"
+                    id="marks_{{ submission.student.id }}_{{ submission.id }}"
                     value="{{ submission.obtained_grade }}"
               
                     style="width: 60px; text-align: center;"

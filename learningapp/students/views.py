@@ -108,7 +108,8 @@ def assignment_submission(request, assignment_id):
             form1.course = assignment.course_id
 
             form1.save()
-            return HttpResponse('successfull')
+    
+            return HttpResponseRedirect(reverse('course-assignment', args=[assignment.course_id.id]))
     else:
         form = addSubmissionForm()
 
@@ -166,7 +167,8 @@ def enrollCourse(request,course_id):
     if not is_enrolled:
         print(i_user.memberShip)
         total_enrolled_courses = len(StudentCourses.objects.filter(user=i_user))
-        if((i_user.memberShip =='F' and total_enrolled_courses ==0 ) or  (i_user.memberShip =='S' and total_enrolled_courses <=3) or (i_user.memberShip =='G' and total_enrolled_courses <=5 ) or (i_user.memberShip =='P')):
+        print(total_enrolled_courses)
+        if((i_user.memberShip =='F' and total_enrolled_courses ==0 ) or  (i_user.memberShip =='S' and total_enrolled_courses <=3) or (i_user.memberShip =='G' and total_enrolled_courses <=1 ) or (i_user.memberShip =='P')):
             StudentCourses.objects.create(user=i_user, course=course)
             course.students.add(i_user)
             course.save()

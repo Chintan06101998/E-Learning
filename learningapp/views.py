@@ -21,9 +21,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         print("form--->>", str(form))
-        if form.is_valid():
-            selected_membership = form.cleaned_data['memberShip']
-            form.cleaned_data['memberShip'] = 'F'            
+        selected_membership = form.cleaned_data['memberShip']
+        form.cleaned_data['memberShip'] = 'F'  
+        if form.is_valid():      
             user  = form.save()
             user_id = user.id  # Get the ID of the user
             if selected_membership != 'F':
@@ -65,10 +65,6 @@ def checkout(request,selected_membership,user_id):
 
 
 def registration_success(request,selected_membership,user_id):
-    
-    print(selected_membership)
-    print(user_id)
-
 
     user = get_object_or_404(Users, id=user_id)
     user.memberShip = selected_membership  # Assuming the membership field is called 'memberShip'

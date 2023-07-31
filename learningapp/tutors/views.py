@@ -344,7 +344,7 @@ def assignment_submissions(request, assignment_id):
         if form.is_valid():
             print(form.cleaned_data)
             for submission in submissions:
-                field_name = f"marks_{submission.student.id}"
+                field_name = f"marks_{submission.student.id}_{ submission.id}"
                 obtained_grade = form.cleaned_data.get(field_name, 0)
                 submission.obtained_grade = int(obtained_grade)
                 submission.save()

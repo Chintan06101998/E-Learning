@@ -73,7 +73,7 @@ class UpdateSubmissionGradesForm(forms.Form):
     def __init__(self, submissions, *args, **kwargs):
         super(UpdateSubmissionGradesForm, self).__init__(*args, **kwargs)
         for submission in submissions:
-            field_name = f"marks_{submission.student.id}"
+            field_name = f"marks_{submission.student.id}_{ submission.id }"
             self.fields[field_name] = forms.IntegerField(min_value=0, initial=submission.obtained_grade, required=False)
 
 
